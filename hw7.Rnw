@@ -253,13 +253,13 @@ If you have not completed STAT 421 or equivalent, please try the problem and the
 \appendix
 \section*{R Code}
 
-%\begin{enumerate}
+\begin{enumerate}
 
 %\setcounter{enumi}{3}
-%\item%4
-%<<prob4, echo = TRUE, eval = FALSE>>=
-%@
+\item%1
+<<prob1, echo = TRUE, eval = FALSE>>=
+@
 
-%\end{enumerate}
+\end{enumerate}
 
 \end{document}
