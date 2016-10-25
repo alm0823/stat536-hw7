@@ -1,0 +1,15 @@
+base
+knitr
+xtable
+leaps
+locfit
+nlme
+mgcv
+tseries
+TSA
+dplyr
+lattice
+ggplot2
+mosaicData
+Matrix
+mosaic
