@@ -37,7 +37,7 @@ library(mosaic)#shuffle()
 library(car)#ss
 @
 
-{\it Revisit your CO2 concentration time series from HW 4. If you want to switch groups from that assignment you can or you can work in the same ones. If you switch groups, pick a time series to analyze from those you worked with. Groups of up to 3. And just one time series per group.}
+{\it Revisit your CO$_2$ concentration time series from HW 4. If you want to switch groups from that assignment you can or you can work in the same ones. If you switch groups, pick a time series to analyze from those you worked with. Groups of up to 3. And just one time series per group.}
 
 As in HW4, we will use the High Altitude Global Climate Observation Center, Mexico (MEX) dataset because we thought the High Altitude aspect may show interesting features of $CO_{2}$ concentrations not available in other datasets. The site is located at the coordinates 18.984, -97.311 near the summit of a 15,000 ft mountain.
 
@@ -95,17 +95,18 @@ table(mex[,c("year", "month")]) #7 years, 12 obs in each
 \begin{enumerate}
 
 \item%1
-{\it We are going to be exploring a more complete model that includes a long-term trend and a seasonal component. We need to pick the type of trend and the form of the seasonal component. For the long term trend, consider the following options: no trend, linear trend, or quadratic trend. For the seasonal component, consider no seasonal component, seasonal means, single harmonic pair (m=1), and 5th order harmonic (m=5). Consider all combinations of these components, fit using ``lm".  Create a table that contains the model description, model used DF (so the count of free parameters), AICs, and $\Delta$AICs, sorting the table by AIcs. Use this information to discuss the top model selected (what was in it), the strength of support for that model versus the others, and the strength of evidence for a long-term trend and seasonal component (of the type selected) versus not including them in the model. 
+{\it We are going to be exploring a more complete model that includes a long-term trend and a seasonal component. We need to pick the type of trend and the form of the seasonal component. For the long term trend, consider the following options: no trend, linear trend, or quadratic trend. For the seasonal component, consider no seasonal component, seasonal means, single harmonic pair (m=1), and 5th order harmonic (m=5). Consider all combinations of these components, fit using ``lm".  Create a table that contains the model description, model used DF (so the count of free parameters), AICs, and $\Delta$AICs, sorting the table by AIcs. Use this information to discuss the top model selected (what was in it), the strength of support for that model versus the others, and the strength of evidence for a long-term trend and seasonal component (of the type selected) versus not including them in the model.}
 
-  - You should be creating a table that contains twelve models.}
-  
-  
+\begin{itemize}
+\item {\it You should be creating a table that contains twelve models.}
+\end{itemize}
+
 <<prob1, results = 'asis'>>=
 
 ## no seasonal component
 
 lm_nt.ns <- lm(value ~ 1, data = mex)
-mod_nt.ns <- paste("$y_{t}$ = $\beta_{o} + e_{t}$")
+mod_nt.ns <- paste("$y_{t}$ = $\\beta_{o} + e_{t}$")
 df_nt.ns <- summary(lm_nt.ns)$df[1]
 aic_nt.ns <- AIC(lm_nt.ns)
 nt.ns <- c("No Year, No Seasonality", df_nt.ns, aic_nt.ns)
@@ -151,24 +152,33 @@ qt.sm <- c("Quadratic Year, 5th Order Harmonic", df_qt.sm, aic_qt.sm)
 #harmonic() generates sines and cosines 
 #note: time unit affects frequency measure
 #discuss: what does m do?  Ho: the number of cycles
+    # Ha: number of terms
+    # pvalue = 0.12 (number of terms is related to number of cycles)
 #discuss: is there a phi component? the help file doesn't have one and I don't understand what is meant by "phase" = phi
+    # phase is physics-talk for shifting the cos left or right
+    # eg cos(t - phi) shifts the graph of cos(t) to the right by phi
+    # harmonic doesn't include phi because it uses b_1*cos(t) + b_2*sin(t)
+    # which is equivalent to b*cost(t+phi) because of the sum identity
+    # source Esty (2012) section 7.3 :P
 #discuss: what is t here?
+    # I think t is number of years, starting at year=1
+    # Before we added frequency = 12, t was the number of months
 mex$monthts <- ts(mex$month, frequency = 12)
 
 lm_nt.sh1 <- lm(value ~ harmonic(monthts, m = 1), data = mex)
-mod_nt.sh1 <- paste("$y_{t} = \\beta_{0} + \\beta_{1}cos(2\\pif(t)) + \\beta_{2}sin(2\\pif(t)) + e_{t}$")
+mod_nt.sh1 <- paste("$y_{t} = \\beta_{0} + \\beta_{1}cos(2\\pi f(t)) + \\beta_{2}sin(2\\pi f(t)) + e_{t}$")
 df_nt.sh1 <- summary(lm_nt.sh1)$df[1]
 aic_nt.sh1 <- AIC(lm_nt.sh1)
 nt.sh1 <- c("No Year, 1st Order Harmonic", df_nt.sh1, aic_nt.sh1)
 
 lm_lt.sh1 <- lm(value ~ year + harmonic(monthts, m = 1), data = mex)
-mod_lt.sh1 <- paste("$y_{t} = \\gamma_{0} + \\gamma_{1}year + \\beta_{1}cos(2\\pif(t)) + \\beta_{2}sin(2\\pif(t)) + e_{t}$")
+mod_lt.sh1 <- paste("$y_{t} = \\gamma_{0} + \\gamma_{1}year + \\beta_{1}cos(2\\pi f(t)) + \\beta_{2}sin(2\\pi f(t)) + e_{t}$")
 df_lt.sh1 <- summary(lm_lt.sh1)$df[1]
 aic_lt.sh1 <- AIC(lm_lt.sh1)
 lt.sh1 <- c("Linear Year, 1st Order Harmonic", df_lt.sh1, aic_lt.sh1)
 
 lm_qt.sh1 <- lm(value ~ poly(year, 2) + harmonic(monthts, m = 1), data = mex)
-mod_qt.sh1 <- paste("$y_{t} = \\gamma_{0} + \\gamma_{1}year + \\gamma_{2}year^{2} + \\beta_{1}cos(2\\pif(t)) + \\beta_{2}sin(2\\pif(t)) + e_{t}$")
+mod_qt.sh1 <- paste("$y_{t} = \\gamma_{0} + \\gamma_{1}year + \\gamma_{2}year^{2} + \\beta_{1}cos(2\\pi f(t)) + \\beta_{2}sin(2\\pi f(t)) + e_{t}$")
 df_qt.sh1 <- summary(lm_qt.sh1)$df[1]
 aic_qt.sh1 <- AIC(lm_qt.sh1)
 qt.sh1 <- c("Quadratic Year, 1st Order Harmonic", df_qt.sh1, aic_qt.sh1)
@@ -176,33 +186,33 @@ qt.sh1 <- c("Quadratic Year, 1st Order Harmonic", df_qt.sh1, aic_qt.sh1)
 ## m = 5
 
 lm_nt.sh5 <- lm(value ~ harmonic(monthts, m = 5), data = mex)
-mod_nt.sh5 <- paste("$y_{t} = \\beta_{0} + \\Sigma_{i=1:5} \\beta_{i}cos(2i\\pif(t)) + \\psi_{i}sin(2i\\pif(t)) + e_{t}$")
+mod_nt.sh5 <- paste("$y_{t} = \\beta_{0} + \\Sigma_{i=1:5} \\beta_{i}cos(2i\\pi f(t)) + \\psi_{i}sin(2i\\pi f(t)) + e_{t}$")
 df_nt.sh5 <- summary(lm_nt.sh5)$df[1]
 aic_nt.sh5 <- AIC(lm_nt.sh5)
 nt.sh5 <- c("No Year, 5th Order Harmonic", df_nt.sh5, aic_nt.sh5)
 
 lm_lt.sh5 <- lm(value ~ year + harmonic(monthts, m = 5), data = mex)
-mod_lt.sh5 <- paste("$y_{t} = \\gamma_{0} + \\gamma_{1}year + \\Sigma_{i=1:5} \\beta_{i}cos(2i\\pif(t)) + \\psi_{i}sin(2i\\pif(t)) + e_{t}$")
+mod_lt.sh5 <- paste("$y_{t} = \\gamma_{0} + \\gamma_{1}year + \\Sigma_{i=1:5} \\beta_{i}cos(2i\\pi f(t)) + \\psi_{i}sin(2i\\pi f(t)) + e_{t}$")
 df_lt.sh5 <- summary(lm_lt.sh5)$df[1]
 aic_lt.sh5 <- AIC(lm_lt.sh5)
 lt.sh5 <- c("Linear Year, 5th Order Harmonic", df_lt.sh5, aic_lt.sh5)
 
 lm_qt.sh5 <- lm(value ~ poly(year, 2) + harmonic(monthts, m = 5), data = mex)
-mod_qt.sh5 <- paste("$y_{t} = \\gamma_{0} + \\gamma_{1}year + \\gamma_{1}year^{2} + \\Sigma_{i=1:5} \\beta_{i}cos(2i\\pif(t)) + \\psi_{i}sin(2i\\pif(t)) + e_{t}$")
+mod_qt.sh5 <- paste("$y_{t} = \\gamma_{0} + \\gamma_{1}year + \\gamma_{1}year^{2} + \\Sigma_{i=1:5} \\beta_{i}cos(2i\\pi f(t)) + \\psi_{i}sin(2i\\pi f(t)) + e_{t}$")
 df_qt.sh5 <- summary(lm_qt.sh5)$df[1]
 aic_qt.sh5 <- AIC(lm_qt.sh5)
 qt.sh5 <- c("Quadratic Year, 5th Order Harmonic", df_qt.sh5, aic_qt.sh5)
 
 df_all <- data.frame(rbind(nt.ns, lt.ns, qt.ns, nt.sm, lt.sm, qt.sm, nt.sh1, lt.sh1, qt.sh1, nt.sh5, lt.sh5, qt.sh5))
 colnames(df_all) <- c("Model", "Free DF", "AIC")
+df_all$`Free DF` <- as.numeric(as.character(df_all$`Free DF`))
+df_all$AIC <- as.numeric(as.character(df_all$AIC))
 
 df_all <- arrange(df_all, AIC)
 
-df_all$AIC <- round(as.numeric(as.character(df_all$AIC)), 2)
-df_all$deltaAIC <- round(as.numeric(as.character(df_all$AIC)), 2) - round(as.numeric(as.character(df_all$AIC[1])), 2)
-colnames(df_all) <- c("Model", "Free DF", "AIC", "deltaAIC")
+df_all$deltaAIC <- df_all$AIC - df_all$AIC[1]
 
-print(xtable(df_all), include.rownames = FALSE)
+print(xtable(df_all, digits = c(0, 0, 0, 2, 2)), include.rownames = FALSE)
 
 
 all_mod <- data.frame(rbind(mod_qt.sh5, mod_lt.sh5, mod_nt.sh5, mod_qt.sh1, mod_lt.sh1, mod_nt.sh1, mod_qt.sm, mod_lt.sm, mod_nt.sm, mod_qt.ns, mod_lt.ns, mod_nt.ns))
@@ -215,7 +225,8 @@ print(xtable(all_mod))
 
 xtable(Anova(lm_lt.sh5, type = "II"))
 @
-The top model had the lowest AIC, the Linear Year, 5th Order Harmonic with 12 free degrees of freedom. Using Type II SS, there is strong evidence of a linearly linear trend after accounting for month based on an F stat of 2856.4 on 1 and 72 df and a pvalue <0.001. There is strong evidence at least one of the harmonic month coefficeints is not zero after accounting for year based on an F stat of 75.5 on 10 and 72 df and a pvalue of <0.001.
+
+The top model had the lowest AIC, the Linear Year, 5th Order Harmonic with 12 free degrees of freedom. Using Type II SS, there is strong evidence of a linear trend after accounting for month based on an F stat of 2856.4 on 1 and 72 df and a pvalue <0.001. There is strong evidence at least one of the harmonic month coefficeints is not zero after accounting for year based on an F stat of 75.5 on 10 and 72 df and a pvalue of <0.001.
 
 No Year, No Seasonality \Sexpr{mod_nt.ns}
 
@@ -242,7 +253,7 @@ Linear Year, 5th Order Harmonic \Sexpr{mod_lt.sh5}
 Quadratic Year, 5th Order Harmonic \Sexpr{mod_qt.sh5}
 
 \item%2
-{\it Now fit a ``gam" from the ``mgcv" package that includes a long-term trend based on a thin-plate spline with shrinkage that uses `k=#years,bs="ts"` from the fractional year variable and a cyclic spline seasonal component. To build the cyclic spline component, use the numerically coded month variable that goes from 1 to 12 and {\texttt k=12,bs=``cc"}. Fit the model, plot the long-term trend and the seasonal component (use ``plot(gam$\_$model)"), and discuss the estimated components, using both the plots and the EDF of each term.} 
+{\it Now fit a ``gam" from the ``mgcv" package that includes a long-term trend based on a thin-plate spline with shrinkage that uses `k=\#years,bs="ts"` from the fractional year variable and a cyclic spline seasonal component. To build the cyclic spline component, use the numerically coded month variable that goes from 1 to 12 and {\texttt k=12,bs=``cc"}. Fit the model, plot the long-term trend and the seasonal component (use ``plot(gam$\_$model)"), and discuss the estimated components, using both the plots and the EDF of each term.} 
 
 To model the complexity in the long term component, we need about one parameter for each year. There appears to be a linear long term year component with some slight curvature and the month component appears to be cyclic. Months appear to come in pairs as there are half the degrees of freedom as the number of months.
 
@@ -257,13 +268,13 @@ gam1
 @
 
 \item%3
-{\it Calculate the AIC of the GAM using the ``AIC" function and discuss how that result compares to your AICs in #1. How is it similar or different in terms of information (degrees of freedom) used?}
+{\it Calculate the AIC of the GAM using the ``AIC" function and discuss how that result compares to your AICs in \#1. How is it similar or different in terms of information (degrees of freedom) used?}
 
 GAM has a lower AIC than all of the models fit in (1). GAM has a fractional degrees of freedom while the models in (1) did not. The degrees of freedom used on GAM are on the upper end of the degrees of freedom used in models in (1).
 <<prob3>>=
 aic_gam1 <- AIC(gam1)
 
-gam1.edf <- sum((gam1)$edf)
+gam1.edf <- sum((gam1)$edf) # Code stolen from the print.gam method
 @
 
 \item%4
@@ -271,8 +282,8 @@ gam1.edf <- sum((gam1)$edf)
 
 <<prob4>>=
 par(mfrow=c(1,1))
-plot(mex$value~time(mex$year), type = "l", ylab = expression(CO[2]))
-text(1, at = c(seq(0,80,by=13.33)), labels = c(seq(min(mex$year), max(mex$year), by = 1)), str = 45, pos = 2)
+plot(mex$value~time(mex$year), type = "l", ylab = expression(CO[2]*" ppm"), xaxt = "n")
+axis(1, at = seq(0,80,length.out=max(mex$year)-min(mex$year)+1), labels = seq(min(mex$year), max(mex$year), by = 1), srt = 45)
 lines(gam1$fitted~time(mex$year), type = "l", col = 507, pch = 3)
 lines(lm_lt.sh5$fitted.values~time(mex$year), type = "l", col = "purple", pch = 2)
 
@@ -283,9 +294,11 @@ lines(lm_lt.sh5$fitted.values~time(mex$year), type = "l", col = "purple", pch = 
 \end{center}
 
 \item%5
-{\it Revisit your simulation with an AR(1) from HW 6 # 10. Consider fitting a model with autocorrelation in it using ``gls" from the ``nlme" package that accounts for an MA(1) error and another that accounts for an AR(1) error. Run your simulation code, extracting the p-values from the two model summaries and estimate the type I error rate in each situation and compare it to what you get from the regular linear model. 
+{\it Revisit your simulation with an AR(1) from HW 6 \#8. Consider fitting a model with autocorrelation in it using ``gls" from the ``nlme" package that accounts for an MA(1) error and another that accounts for an AR(1) error. Run your simulation code, extracting the p-values from the two model summaries and estimate the type I error rate in each situation and compare it to what you get from the regular linear model.}
 
-<<prob5>>=
+{\bf He changed this to say \#8 so we're supposed to do type I error rate simulations instead of permutation tests.}
+
+<<prob5, cache = TRUE>>=
 
 Bozeman<-read.csv("Bozeman.csv",header=T)
 
@@ -301,12 +314,12 @@ Data1<-data.frame(Year=yearcountMINF[,1],DaysBelow32=yearcountMINF$x[,1],
 plot(PropDays ~ Year, data = Data1, type = "l", ylim = c(0,1),
      main = "Estimated Linear Trends",
      ylab = expression("Proportion of Days Below 32"*degree*F))
-abline(lm.Year, lwd = 2)
-abline(model1s, col = "purple", lty = 2, lwd = 2)
-abline(a = zyp.Year$coefficients[1], b = 
-         zyp.Year$coefficients[2], col = "red", lty = 3, lwd = 2)
-legend("topright", lwd = 2, lty = 1:3, col = c("black", "purple", "red"),
-       legend = c("OLS", "Sen", "Zhang"))
+#abline(lm.Year, lwd = 2)
+#abline(model1s, col = "purple", lty = 2, lwd = 2)
+#abline(a = zyp.Year$coefficients[1], b = 
+#         zyp.Year$coefficients[2], col = "red", lty = 3, lwd = 2)
+#legend("topright", lwd = 2, lty = 1:3, col = c("black", "purple", "red"),
+#       legend = c("OLS", "Sen", "Zhang"))
 
 #corAR1 == AR1 process
 #corARMA == autoregressive moving avg
@@ -314,22 +327,23 @@ gls_ar1_obs <- gls(PropDays ~ Year, data = Data1, correlation = corAR1())
 
 gls_ar1_out <- coef(gls_ar1_obs)[2]
 
-gls_ma_obs <- gls(PropDays ~ Year, data = Data1, correlation = corARMA())
+gls_ma_obs <- gls(PropDays ~ Year, data = Data1, correlation = corARMA(q = 1))
 
 gls_ma_out <- coef(gls_ma_obs)[2]
 
 gls_ar1 <- replicate(1000, coef(gls(PropDays ~ shuffle(Year), data = Data1, correlation = corAR1()))[2])
 
-#error ??
-gls_ma <- replicate(1000, coef(gls(PropDays ~ shuffle(Year), data = Data1, correlation = corARMA()))[2])
+gls_ma <- replicate(1000, coef(gls(PropDays ~ shuffle(Year), data = Data1, correlation = corARMA(q = 1)))[2])
 
 pvalue_ar1 <- (length(which(gls_ar1 <= gls_ar1_out)) + length(which(gls_ar1 >= -gls_ar1_out)))/length(gls_ar1)
 
-#pvalue_ma <- (length(which(gls_ma <= gls_ma_out)) + length(which(gls_ma >= -gls_ma_out)))/length(gls_ma)
+pvalue_ma <- (length(which(gls_ma <= gls_ma_out)) + length(which(gls_ma >= -gls_ma_out)))/length(gls_ma)
 
 @
 
-- In a ``gls" model summary, the estimates, SEs, test statistics, and p-values are contained in the `tTable` part of the summary. It has a similar layout to `coef` that we pulled the [2,4] element from to get the p-value from ``lm".}
+\begin{itemize}
+\item{\it In a ``gls" model summary, the estimates, SEs, test statistics, and p-values are contained in the `tTable` part of the summary. It has a similar layout to `coef` that we pulled the [2,4] element from to get the p-value from ``lm".}
+\end{itemize}
 
 \begin{center}
 {\large \bf{Some derivation practice (these can be handwritten). 
@@ -343,9 +357,11 @@ If you have not completed STAT 421 or equivalent, please try the problem and the
 
 
 \item%7
-{\it Suppose that we are interested in the properties of a local average (linear filter) of two observations from an original time series, $x_t$. The new series is $y_t=(0.5)*(x_{t-1}+x_t)$. The mean of $x_t$ is 3, the variance of $x_t$ is 4, and the correlation between any neighboring $x_t$'s is 0.5 (so $cor(x_t, x_{t-1})=0.5$). $x_t$'s more than two time points apart are uncorrelated (correlation is 0). Use the rules for means and variances of linear combinations to find $E(y_t)$, $Var(y_t)$, and $Cov(y_t,y_{t-1})$. Do not worry about what happens at the edges of the time series (for t=1 or t=n), only worry about $t$ in general. 
+{\it Suppose that we are interested in the properties of a local average (linear filter) of two observations from an original time series, $x_t$. The new series is $y_t=(0.5)*(x_{t-1}+x_t)$. The mean of $x_t$ is 3, the variance of $x_t$ is 4, and the correlation between any neighboring $x_t$'s is 0.5 (so $cor(x_t, x_{t-1})=0.5$). $x_t$'s more than two time points apart are uncorrelated (correlation is 0). Use the rules for means and variances of linear combinations to find $E(y_t)$, $Var(y_t)$, and $Cov(y_t,y_{t-1})$. Do not worry about what happens at the edges of the time series (for t=1 or t=n), only worry about $t$ in general.}
 
-  - Note that you have some preliminary work to complete to go from the provided information to what you need to work on the three derivations requested.}
+\begin{itemize}
+\item {\it Note that you have some preliminary work to complete to go from the provided information to what you need to work on the three derivations requested.}
+\end{itemize}
 
 \end{enumerate}
 
@@ -357,9 +373,18 @@ If you have not completed STAT 421 or equivalent, please try the problem and the
 
 \begin{enumerate}
 
-%\setcounter{enumi}{3}
 \item%1
 <<prob1, echo = TRUE, eval = FALSE>>=
+@
+\item%2
+<<prob2, echo = TRUE, eval = FALSE>>=
+@
+\item%3
+<<prob3, echo = TRUE, eval = FALSE>>=
+@
+\setcounter{enumi}{4}
+\item%5
+<<prob5, echo = TRUE, eval = FALSE>>=
 @
 
 \end{enumerate}
