@@ -34,6 +34,7 @@ library(TSA)#harmonic()
 library(mgcv)#gam()
 library(nlme)#gls()
 library(mosaic)#shuffle()
+library(car)#ss
 @
 
 {\it Revisit your CO$_2$ concentration time series from HW 4. If you want to switch groups from that assignment you can or you can work in the same ones. If you switch groups, pick a time series to analyze from those you worked with. Groups of up to 3. And just one time series per group.}
@@ -220,9 +221,12 @@ row.names(all_mod) <- c("Quadratic Year, 5th Order Harmonic", "Linear Year, 5th 
 
 colnames(all_mod) <- " "
 
-#print(xtable(all_mod))
+print(xtable(all_mod))
 
+xtable(Anova(lm_lt.sh5, type = "II"))
 @
+
+The top model had the lowest AIC, the Linear Year, 5th Order Harmonic with 12 free degrees of freedom. Using Type II SS, there is strong evidence of a linear trend after accounting for month based on an F stat of 2856.4 on 1 and 72 df and a pvalue <0.001. There is strong evidence at least one of the harmonic month coefficeints is not zero after accounting for year based on an F stat of 75.5 on 10 and 72 df and a pvalue of <0.001.
 
 No Year, No Seasonality \Sexpr{mod_nt.ns}
 
@@ -251,25 +255,39 @@ Quadratic Year, 5th Order Harmonic \Sexpr{mod_qt.sh5}
 \item%2
 {\it Now fit a ``gam" from the ``mgcv" package that includes a long-term trend based on a thin-plate spline with shrinkage that uses `k=\#years,bs="ts"` from the fractional year variable and a cyclic spline seasonal component. To build the cyclic spline component, use the numerically coded month variable that goes from 1 to 12 and {\texttt k=12,bs=``cc"}. Fit the model, plot the long-term trend and the seasonal component (use ``plot(gam$\_$model)"), and discuss the estimated components, using both the plots and the EDF of each term.} 
 
+To model the complexity in the long term component, we need about one parameter for each year. There appears to be a linear long term year component with some slight curvature and the month component appears to be cyclic. Months appear to come in pairs as there are half the degrees of freedom as the number of months.
+
 <<prob2>>=
-mex$yearts <- ts(mex$year)
+mex$yearts <- ts(mex$year, frequency = 12)
 gam1 <- gam(value ~ s(time(yearts), k = 7, bs = "ts") + s(monthts, k = 12, bs = "cc"), data = mex)
 
 par(mfrow = c(1,2))
 plot(gam1)
 
+gam1
 @
 
 \item%3
 {\it Calculate the AIC of the GAM using the ``AIC" function and discuss how that result compares to your AICs in \#1. How is it similar or different in terms of information (degrees of freedom) used?}
 
+GAM has a lower AIC than all of the models fit in (1). GAM has a fractional degrees of freedom while the models in (1) did not. The degrees of freedom used on GAM are on the upper end of the degrees of freedom used in models in (1).
 <<prob3>>=
 aic_gam1 <- AIC(gam1)
 
+gam1.edf <- sum((gam1)$edf) # Code stolen from the print.gam method
 @
 
 \item%4
 {\it Compare the fitted values of your GAM to those from your top model, plotting the two models's results and the responses vs time on the same plot.}
+
+<<prob4>>=
+par(mfrow=c(1,1))
+plot(mex$value~time(mex$year), type = "l", ylab = expression(CO[2]*" ppm"), xaxt = "n")
+axis(1, at = seq(0,80,length.out=max(mex$year)-min(mex$year)+1), labels = seq(min(mex$year), max(mex$year), by = 1), srt = 45)
+lines(gam1$fitted~time(mex$year), type = "l", col = 507, pch = 3)
+lines(lm_lt.sh5$fitted.values~time(mex$year), type = "l", col = "purple", pch = 2)
+
+@
 
 \begin{center}
 {\large \bf{A simulation study with autocorrelation present}}
@@ -339,9 +357,11 @@ If you have not completed STAT 421 or equivalent, please try the problem and the
 
 
 \item%7
-{\it Suppose that we are interested in the properties of a local average (linear filter) of two observations from an original time series, $x_t$. The new series is $y_t=(0.5)*(x_{t-1}+x_t)$. The mean of $x_t$ is 3, the variance of $x_t$ is 4, and the correlation between any neighboring $x_t$'s is 0.5 (so $cor(x_t, x_{t-1})=0.5$). $x_t$'s more than two time points apart are uncorrelated (correlation is 0). Use the rules for means and variances of linear combinations to find $E(y_t)$, $Var(y_t)$, and $Cov(y_t,y_{t-1})$. Do not worry about what happens at the edges of the time series (for t=1 or t=n), only worry about $t$ in general. 
+{\it Suppose that we are interested in the properties of a local average (linear filter) of two observations from an original time series, $x_t$. The new series is $y_t=(0.5)*(x_{t-1}+x_t)$. The mean of $x_t$ is 3, the variance of $x_t$ is 4, and the correlation between any neighboring $x_t$'s is 0.5 (so $cor(x_t, x_{t-1})=0.5$). $x_t$'s more than two time points apart are uncorrelated (correlation is 0). Use the rules for means and variances of linear combinations to find $E(y_t)$, $Var(y_t)$, and $Cov(y_t,y_{t-1})$. Do not worry about what happens at the edges of the time series (for t=1 or t=n), only worry about $t$ in general.}
 
-  - Note that you have some preliminary work to complete to go from the provided information to what you need to work on the three derivations requested.}
+\begin{itemize}
+\item {\it Note that you have some preliminary work to complete to go from the provided information to what you need to work on the three derivations requested.}
+\end{itemize}
 
 \end{enumerate}
 
