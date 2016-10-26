@@ -129,7 +129,7 @@ is filled.
 \end{itemize}
 
 % latex table generated in R 3.3.1 by xtable 1.8-2 package
-% Tue Oct 25 19:44:33 2016
+% Wed Oct 26 07:08:34 2016
 \begin{table}[H]
 \centering
 \begin{tabular}{lrrr}
@@ -152,37 +152,37 @@ Linear Year, 5th Order Harmonic & 12 & 202.38 & 0.00 \\
 \end{tabular}
 \end{table}
 % latex table generated in R 3.3.1 by xtable 1.8-2 package
-% Tue Oct 25 19:44:33 2016
+% Wed Oct 26 07:08:34 2016
 \begin{table}[H]
 \centering
 \begin{tabular}{rl}
   \hline
  & Form \\ 
   \hline
-Quadratic Year, 5th Order Harmonic & $y_{t} = \gamma_{0} + \gamma_{1}year + \gamma_{1}year^{2} +
-               \Sigma_{i=1:5} \beta_{i}cos(2i\pi f(t)) + \psi_{i}sin(2i\pi f(t)) + e_{t}$ \\ 
-  Linear Year, 5th Order Harmonic & $y_{t} = \gamma_{0} + \gamma_{1}year + \Sigma_{i=1:5} \beta_{i}cos(2i\pi f(t)) + \psi_{i}sin(2i\pi f(t)) + e_{t}$ \\ 
-  No Year, 5th Order Harmonic & $y_{t} = \beta_{0} + \Sigma_{i=1:5} \beta_{i}cos(2i\pi f(t)) + \psi_{i}sin(2i\pi f(t)) + e_{t}$ \\ 
-  Quadratic Year, 1st Order Harmonic & $y_{t} = \gamma_{0} + \gamma_{1}year + \gamma_{2}year^{2} + \beta_{1}cos(2\pi f(t)) + \beta_{2}sin(2\pi f(t)) + e_{t}$ \\ 
-  Linear Year, 1st Order Harmonic & $y_{t} = \gamma_{0} + \gamma_{1}year + \beta_{1}cos(2\pi f(t)) + \beta_{2}sin(2\pi f(t)) + e_{t}$ \\ 
-  No Year, 1st Order Harmonic & $y_{t} = \beta_{0} + \beta_{1}cos(2\pi f(t)) + \beta_{2}sin(2\pi f(t)) + e_{t}$ \\ 
-  Quadratic Year, Monthly Means & $y_{t}$ = $\gamma_{1}year + \gamma_{2}year^{2} + \beta_{1}jan.ind + \beta_{2}feb.ind + \beta_{3}mar.ind +
+Quadratic Year, 5th Order Harmonic & $y_{t} = \gamma_{0} + \gamma_{1}t + \gamma_{1}t^{2} +
+\sum_{i=1}^{5}\left[\beta_{i}cos(2i\pi t) + \psi_{i}sin(2i\pi t)\right] + e_{t}$ \\ 
+  Linear Year, 5th Order Harmonic & $y_{t} = \gamma_{0} + \gamma_{1}t + \sum_{i=1}^{5}\left[\beta_{i}cos(2i\pi t) + \psi_{i}sin(2i\pi t)\right] + e_{t}$ \\ 
+  No Year, 5th Order Harmonic & $y_{t} = \beta_{0} + \sum_{i=1}^{5}\left[\beta_{i}cos(2i\pi t) + \psi_{i}sin(2i\pi t)\right] + e_{t}$ \\ 
+  Quadratic Year, 1st Order Harmonic & $y_{t} = \gamma_{0} + \gamma_{1}t + \gamma_{2}t^{2} + \beta_{1}cos(2\pi t) + \beta_{2}sin(2\pi t) + e_{t}$ \\ 
+  Linear Year, 1st Order Harmonic & $y_{t} = \gamma_{0} + \gamma_{1}t + \beta_{1}cos(2\pi t) + \beta_{2}sin(2\pi t) + e_{t}$ \\ 
+  No Year, 1st Order Harmonic & $y_{t} = \beta_{0} + \beta_{1}cos(2\pi t) + \beta_{2}sin(2\pi t) + e_{t}$ \\ 
+  Quadratic Year, Monthly Means & $y_{t}$ = $\gamma_{1}t + \gamma_{2}t^{2} + \beta_{1}jan.ind + \beta_{2}feb.ind + \beta_{3}mar.ind +
               \beta_{4}apr.ind + \beta_{5}may.ind + \beta_{6}june.ind + \beta_{7}july.ind + \beta_{8}aug.ind + \beta_{9}sept.ind +
               \beta_{10}oct.ind + \beta_{11}nov.ind + \beta_{12}dec.ind + e_{t}$ \\ 
-  Linear Year, Monthly Means & $y_{t}$ = $\gamma_{1}year + \beta_{1}jan.ind  + \beta_{2}feb.ind + \beta_{3}mar.ind + \beta_{4}apr.ind + 
+  Linear Year, Monthly Means & $y_{t}$ = $\gamma_{1}t + \beta_{1}jan.ind  + \beta_{2}feb.ind + \beta_{3}mar.ind + \beta_{4}apr.ind + 
               \beta_{5}may.ind + \beta_{6}june.ind + \beta_{7}july.ind + \beta_{8}aug.ind + \beta_{9}sept.ind +
               \beta_{10}oct.ind + \beta_{11}nov.ind + \beta_{12}dec.ind + e_{t}$ \\ 
   No Year, Monthly Means & $y_{t}$ = $\beta_{1}jan.ind + \beta_{2}feb.ind + \beta_{3}mar.ind + \beta_{4}apr.ind + 
                \beta_{5}may.ind + \beta_{6}june.ind + \beta_{7}july.ind + \beta_{8}aug.ind + \beta_{9}sept.ind +
                \beta_{10}oct.ind + \beta_{11}nov.ind + \beta_{12}dec.ind + e_{t}$ \\ 
-  Quadratic Year, No Seasonality & $y_{t}$ = $\gamma_{o} + \gamma_{1}year + \gamma_{1}year^{2} + e_{t}$ \\ 
-  Linear Year, No Seasonality & $y_{t}$ = $\gamma_{o} + \gamma_{1}year + e_{t}$ \\ 
+  Quadratic Year, No Seasonality & $y_{t}$ = $\gamma_{o} + \gamma_{1}t + \gamma_{1}t^{2} + e_{t}$ \\ 
+  Linear Year, No Seasonality & $y_{t}$ = $\gamma_{o} + \gamma_{1}t + e_{t}$ \\ 
   No Year, No Seasonality & $y_{t}$ = $\beta_{o} + e_{t}$ \\ 
    \hline
 \end{tabular}
 \end{table}
 % latex table generated in R 3.3.1 by xtable 1.8-2 package
-% Tue Oct 25 19:44:33 2016
+% Wed Oct 26 07:08:34 2016
 \begin{table}[H]
 \centering
 \begin{tabular}{lrrrr}
@@ -203,7 +203,7 @@ The top model (AIC = ) was the Linear Year, 5th Order Harmonic, which used 12 fr
 {\it Now fit a ``gam" from the ``mgcv" package that includes a long-term trend based on a thin-plate spline with shrinkage that uses `k=\#years,bs="ts"` from the fractional year variable and a cyclic spline seasonal component. To build the cyclic spline component, use the numerically coded month variable that goes from 1 to 12 and {\texttt k=12,bs=``cc"}. Fit the model, plot the long-term trend and the seasonal component (use ``plot(gam$\_$model)"), and discuss the estimated components, using both the plots and the EDF of each term.} 
 
 % latex table generated in R 3.3.1 by xtable 1.8-2 package
-% Tue Oct 25 19:44:33 2016
+% Wed Oct 26 07:08:34 2016
 \begin{table}[H]
 \centering
 \begin{tabular}{rrrrr}
@@ -215,7 +215,7 @@ The top model (AIC = ) was the Linear Year, 5th Order Harmonic, which used 12 fr
 \end{tabular}
 \end{table}
 % latex table generated in R 3.3.1 by xtable 1.8-2 package
-% Tue Oct 25 19:44:33 2016
+% Wed Oct 26 07:08:34 2016
 \begin{table}[H]
 \centering
 \begin{tabular}{rrrrr}
@@ -341,19 +341,20 @@ If you have not completed STAT 421 or equivalent, please try the problem and the
 \hlstd{nt.ns} \hlkwb{<-} \hlkwd{data.frame}\hlstd{(}\hlstr{"No Year, No Seasonality"}\hlstd{, df_nt.ns, aic_nt.ns)}
 
 \hlstd{lm_lt.ns} \hlkwb{<-} \hlkwd{lm}\hlstd{(value} \hlopt{~} \hlstd{year,} \hlkwc{data} \hlstd{= mex)}
-\hlstd{mod_lt.ns} \hlkwb{<-} \hlstr{"$y_\{t\}$ = $\textbackslash{}\textbackslash{}gamma_\{o\} + \textbackslash{}\textbackslash{}gamma_\{1\}year + e_\{t\}$"}
+\hlstd{mod_lt.ns} \hlkwb{<-} \hlstr{"$y_\{t\}$ = $\textbackslash{}\textbackslash{}gamma_\{o\} + \textbackslash{}\textbackslash{}gamma_\{1\}t + e_\{t\}$"}
 \hlstd{df_lt.ns} \hlkwb{<-} \hlkwd{summary}\hlstd{(lm_lt.ns)}\hlopt{$}\hlstd{df[}\hlnum{1}\hlstd{]}
 \hlstd{aic_lt.ns} \hlkwb{<-} \hlkwd{AIC}\hlstd{(lm_lt.ns)}
 \hlstd{lt.ns} \hlkwb{<-} \hlkwd{data.frame}\hlstd{(}\hlstr{"Linear Year, No Seasonality"}\hlstd{, df_lt.ns, aic_lt.ns)}
 
 \hlstd{lm_qt.ns} \hlkwb{<-} \hlkwd{lm}\hlstd{(value} \hlopt{~} \hlkwd{poly}\hlstd{(year,} \hlkwc{degree} \hlstd{=} \hlnum{2}\hlstd{),} \hlkwc{data} \hlstd{= mex)}
-\hlstd{mod_qt.ns} \hlkwb{<-} \hlstr{"$y_\{t\}$ = $\textbackslash{}\textbackslash{}gamma_\{o\} + \textbackslash{}\textbackslash{}gamma_\{1\}year + \textbackslash{}\textbackslash{}gamma_\{1\}year^\{2\} + e_\{t\}$"}
+\hlstd{mod_qt.ns} \hlkwb{<-} \hlstr{"$y_\{t\}$ = $\textbackslash{}\textbackslash{}gamma_\{o\} + \textbackslash{}\textbackslash{}gamma_\{1\}t + \textbackslash{}\textbackslash{}gamma_\{1\}t^\{2\} + e_\{t\}$"}
 \hlstd{df_qt.ns} \hlkwb{<-} \hlkwd{summary}\hlstd{(lm_qt.ns)}\hlopt{$}\hlstd{df[}\hlnum{1}\hlstd{]}
 \hlstd{aic_qt.ns} \hlkwb{<-} \hlkwd{AIC}\hlstd{(lm_qt.ns)}
 \hlstd{qt.ns} \hlkwb{<-} \hlkwd{data.frame}\hlstd{(}\hlstr{"Quadratic Year, No Seasonality"}\hlstd{, df_qt.ns, aic_qt.ns)}
 
 \hlcom{## seasonal means}
 
+\hlcom{# Replace \textbackslash{}beta_\{j\} month.ind with \textbackslash{}beta_\{month j\}?}
 \hlstd{lm_nt.sm} \hlkwb{<-} \hlkwd{lm}\hlstd{(value} \hlopt{~} \hlkwd{as.factor}\hlstd{(month),} \hlkwc{data} \hlstd{= mex)}
 \hlstd{mod_nt.sm} \hlkwb{<-} \hlstr{"$y_\{t\}$ = $\textbackslash{}\textbackslash{}beta_\{1\}jan.ind + \textbackslash{}\textbackslash{}beta_\{2\}feb.ind + \textbackslash{}\textbackslash{}beta_\{3\}mar.ind + \textbackslash{}\textbackslash{}beta_\{4\}apr.ind + 
                \textbackslash{}\textbackslash{}beta_\{5\}may.ind + \textbackslash{}\textbackslash{}beta_\{6\}june.ind + \textbackslash{}\textbackslash{}beta_\{7\}july.ind + \textbackslash{}\textbackslash{}beta_\{8\}aug.ind + \textbackslash{}\textbackslash{}beta_\{9\}sept.ind +
@@ -363,7 +364,7 @@ If you have not completed STAT 421 or equivalent, please try the problem and the
 \hlstd{nt.sm} \hlkwb{<-} \hlkwd{data.frame}\hlstd{(}\hlstr{"No Year, Monthly Means"}\hlstd{, df_nt.sm, aic_nt.sm)}
 
 \hlstd{lm_lt.sm} \hlkwb{<-} \hlkwd{lm}\hlstd{(value} \hlopt{~} \hlstd{year} \hlopt{+} \hlkwd{as.factor}\hlstd{(month),} \hlkwc{data} \hlstd{= mex)}
-\hlstd{mod_lt.sm} \hlkwb{<-} \hlstr{"$y_\{t\}$ = $\textbackslash{}\textbackslash{}gamma_\{1\}year + \textbackslash{}\textbackslash{}beta_\{1\}jan.ind  + \textbackslash{}\textbackslash{}beta_\{2\}feb.ind + \textbackslash{}\textbackslash{}beta_\{3\}mar.ind + \textbackslash{}\textbackslash{}beta_\{4\}apr.ind + 
+\hlstd{mod_lt.sm} \hlkwb{<-} \hlstr{"$y_\{t\}$ = $\textbackslash{}\textbackslash{}gamma_\{1\}t + \textbackslash{}\textbackslash{}beta_\{1\}jan.ind  + \textbackslash{}\textbackslash{}beta_\{2\}feb.ind + \textbackslash{}\textbackslash{}beta_\{3\}mar.ind + \textbackslash{}\textbackslash{}beta_\{4\}apr.ind + 
               \textbackslash{}\textbackslash{}beta_\{5\}may.ind + \textbackslash{}\textbackslash{}beta_\{6\}june.ind + \textbackslash{}\textbackslash{}beta_\{7\}july.ind + \textbackslash{}\textbackslash{}beta_\{8\}aug.ind + \textbackslash{}\textbackslash{}beta_\{9\}sept.ind +
               \textbackslash{}\textbackslash{}beta_\{10\}oct.ind + \textbackslash{}\textbackslash{}beta_\{11\}nov.ind + \textbackslash{}\textbackslash{}beta_\{12\}dec.ind + e_\{t\}$"}
 \hlstd{df_lt.sm} \hlkwb{<-} \hlkwd{summary}\hlstd{(lm_lt.sm)}\hlopt{$}\hlstd{df[}\hlnum{1}\hlstd{]}
@@ -371,7 +372,7 @@ If you have not completed STAT 421 or equivalent, please try the problem and the
 \hlstd{lt.sm} \hlkwb{<-} \hlkwd{data.frame}\hlstd{(}\hlstr{"Linear Year, Monthly Means"}\hlstd{, df_lt.sm, aic_lt.sm)}
 
 \hlstd{lm_qt.sm} \hlkwb{<-} \hlkwd{lm}\hlstd{(value} \hlopt{~} \hlkwd{poly}\hlstd{(year,} \hlkwc{degree} \hlstd{=} \hlnum{2}\hlstd{)} \hlopt{+} \hlkwd{as.factor}\hlstd{(month),} \hlkwc{data} \hlstd{= mex)}
-\hlstd{mod_qt.sm} \hlkwb{<-} \hlstr{"$y_\{t\}$ = $\textbackslash{}\textbackslash{}gamma_\{1\}year + \textbackslash{}\textbackslash{}gamma_\{2\}year^\{2\} + \textbackslash{}\textbackslash{}beta_\{1\}jan.ind + \textbackslash{}\textbackslash{}beta_\{2\}feb.ind + \textbackslash{}\textbackslash{}beta_\{3\}mar.ind +
+\hlstd{mod_qt.sm} \hlkwb{<-} \hlstr{"$y_\{t\}$ = $\textbackslash{}\textbackslash{}gamma_\{1\}t + \textbackslash{}\textbackslash{}gamma_\{2\}t^\{2\} + \textbackslash{}\textbackslash{}beta_\{1\}jan.ind + \textbackslash{}\textbackslash{}beta_\{2\}feb.ind + \textbackslash{}\textbackslash{}beta_\{3\}mar.ind +
               \textbackslash{}\textbackslash{}beta_\{4\}apr.ind + \textbackslash{}\textbackslash{}beta_\{5\}may.ind + \textbackslash{}\textbackslash{}beta_\{6\}june.ind + \textbackslash{}\textbackslash{}beta_\{7\}july.ind + \textbackslash{}\textbackslash{}beta_\{8\}aug.ind + \textbackslash{}\textbackslash{}beta_\{9\}sept.ind +
               \textbackslash{}\textbackslash{}beta_\{10\}oct.ind + \textbackslash{}\textbackslash{}beta_\{11\}nov.ind + \textbackslash{}\textbackslash{}beta_\{12\}dec.ind + e_\{t\}$"}
 \hlstd{df_qt.sm} \hlkwb{<-} \hlkwd{summary}\hlstd{(lm_qt.sm)}\hlopt{$}\hlstd{df[}\hlnum{1}\hlstd{]}
@@ -396,19 +397,19 @@ If you have not completed STAT 421 or equivalent, please try the problem and the
 \hlstd{mex}\hlopt{$}\hlstd{monthts} \hlkwb{<-} \hlkwd{ts}\hlstd{(mex}\hlopt{$}\hlstd{month,} \hlkwc{start} \hlstd{=} \hlkwd{min}\hlstd{(mex}\hlopt{$}\hlstd{year),} \hlkwc{frequency} \hlstd{=} \hlnum{12}\hlstd{)}
 
 \hlstd{lm_nt.sh1} \hlkwb{<-} \hlkwd{lm}\hlstd{(value} \hlopt{~} \hlkwd{harmonic}\hlstd{(monthts,} \hlkwc{m} \hlstd{=} \hlnum{1}\hlstd{),} \hlkwc{data} \hlstd{= mex)}
-\hlstd{mod_nt.sh1} \hlkwb{<-} \hlstr{"$y_\{t\} = \textbackslash{}\textbackslash{}beta_\{0\} + \textbackslash{}\textbackslash{}beta_\{1\}cos(2\textbackslash{}\textbackslash{}pi f(t)) + \textbackslash{}\textbackslash{}beta_\{2\}sin(2\textbackslash{}\textbackslash{}pi f(t)) + e_\{t\}$"}
+\hlstd{mod_nt.sh1} \hlkwb{<-} \hlstr{"$y_\{t\} = \textbackslash{}\textbackslash{}beta_\{0\} + \textbackslash{}\textbackslash{}beta_\{1\}cos(2\textbackslash{}\textbackslash{}pi t) + \textbackslash{}\textbackslash{}beta_\{2\}sin(2\textbackslash{}\textbackslash{}pi t) + e_\{t\}$"}
 \hlstd{df_nt.sh1} \hlkwb{<-} \hlkwd{summary}\hlstd{(lm_nt.sh1)}\hlopt{$}\hlstd{df[}\hlnum{1}\hlstd{]}
 \hlstd{aic_nt.sh1} \hlkwb{<-} \hlkwd{AIC}\hlstd{(lm_nt.sh1)}
 \hlstd{nt.sh1} \hlkwb{<-} \hlkwd{data.frame}\hlstd{(}\hlstr{"No Year, 1st Order Harmonic"}\hlstd{, df_nt.sh1, aic_nt.sh1)}
 
 \hlstd{lm_lt.sh1} \hlkwb{<-} \hlkwd{lm}\hlstd{(value} \hlopt{~} \hlstd{year} \hlopt{+} \hlkwd{harmonic}\hlstd{(monthts,} \hlkwc{m} \hlstd{=} \hlnum{1}\hlstd{),} \hlkwc{data} \hlstd{= mex)}
-\hlstd{mod_lt.sh1} \hlkwb{<-} \hlstr{"$y_\{t\} = \textbackslash{}\textbackslash{}gamma_\{0\} + \textbackslash{}\textbackslash{}gamma_\{1\}year + \textbackslash{}\textbackslash{}beta_\{1\}cos(2\textbackslash{}\textbackslash{}pi f(t)) + \textbackslash{}\textbackslash{}beta_\{2\}sin(2\textbackslash{}\textbackslash{}pi f(t)) + e_\{t\}$"}
+\hlstd{mod_lt.sh1} \hlkwb{<-} \hlstr{"$y_\{t\} = \textbackslash{}\textbackslash{}gamma_\{0\} + \textbackslash{}\textbackslash{}gamma_\{1\}t + \textbackslash{}\textbackslash{}beta_\{1\}cos(2\textbackslash{}\textbackslash{}pi t) + \textbackslash{}\textbackslash{}beta_\{2\}sin(2\textbackslash{}\textbackslash{}pi t) + e_\{t\}$"}
 \hlstd{df_lt.sh1} \hlkwb{<-} \hlkwd{summary}\hlstd{(lm_lt.sh1)}\hlopt{$}\hlstd{df[}\hlnum{1}\hlstd{]}
 \hlstd{aic_lt.sh1} \hlkwb{<-} \hlkwd{AIC}\hlstd{(lm_lt.sh1)}
 \hlstd{lt.sh1} \hlkwb{<-} \hlkwd{data.frame}\hlstd{(}\hlstr{"Linear Year, 1st Order Harmonic"}\hlstd{, df_lt.sh1, aic_lt.sh1)}
 
 \hlstd{lm_qt.sh1} \hlkwb{<-} \hlkwd{lm}\hlstd{(value} \hlopt{~} \hlkwd{poly}\hlstd{(year,} \hlnum{2}\hlstd{)} \hlopt{+} \hlkwd{harmonic}\hlstd{(monthts,} \hlkwc{m} \hlstd{=} \hlnum{1}\hlstd{),} \hlkwc{data} \hlstd{= mex)}
-\hlstd{mod_qt.sh1} \hlkwb{<-} \hlstr{"$y_\{t\} = \textbackslash{}\textbackslash{}gamma_\{0\} + \textbackslash{}\textbackslash{}gamma_\{1\}year + \textbackslash{}\textbackslash{}gamma_\{2\}year^\{2\} + \textbackslash{}\textbackslash{}beta_\{1\}cos(2\textbackslash{}\textbackslash{}pi f(t)) + \textbackslash{}\textbackslash{}beta_\{2\}sin(2\textbackslash{}\textbackslash{}pi f(t)) + e_\{t\}$"}
+\hlstd{mod_qt.sh1} \hlkwb{<-} \hlstr{"$y_\{t\} = \textbackslash{}\textbackslash{}gamma_\{0\} + \textbackslash{}\textbackslash{}gamma_\{1\}t + \textbackslash{}\textbackslash{}gamma_\{2\}t^\{2\} + \textbackslash{}\textbackslash{}beta_\{1\}cos(2\textbackslash{}\textbackslash{}pi t) + \textbackslash{}\textbackslash{}beta_\{2\}sin(2\textbackslash{}\textbackslash{}pi t) + e_\{t\}$"}
 \hlstd{df_qt.sh1} \hlkwb{<-} \hlkwd{summary}\hlstd{(lm_qt.sh1)}\hlopt{$}\hlstd{df[}\hlnum{1}\hlstd{]}
 \hlstd{aic_qt.sh1} \hlkwb{<-} \hlkwd{AIC}\hlstd{(lm_qt.sh1)}
 \hlstd{qt.sh1} \hlkwb{<-} \hlkwd{data.frame}\hlstd{(}\hlstr{"Quadratic Year, 1st Order Harmonic"}\hlstd{, df_qt.sh1, aic_qt.sh1)}
@@ -416,20 +417,20 @@ If you have not completed STAT 421 or equivalent, please try the problem and the
 \hlcom{## m = 5}
 
 \hlstd{lm_nt.sh5} \hlkwb{<-} \hlkwd{lm}\hlstd{(value} \hlopt{~} \hlkwd{harmonic}\hlstd{(monthts,} \hlkwc{m} \hlstd{=} \hlnum{5}\hlstd{),} \hlkwc{data} \hlstd{= mex)}
-\hlstd{mod_nt.sh5} \hlkwb{<-} \hlstr{"$y_\{t\} = \textbackslash{}\textbackslash{}beta_\{0\} + \textbackslash{}\textbackslash{}Sigma_\{i=1:5\} \textbackslash{}\textbackslash{}beta_\{i\}cos(2i\textbackslash{}\textbackslash{}pi f(t)) + \textbackslash{}\textbackslash{}psi_\{i\}sin(2i\textbackslash{}\textbackslash{}pi f(t)) + e_\{t\}$"}
+\hlstd{mod_nt.sh5} \hlkwb{<-} \hlstr{"$y_\{t\} = \textbackslash{}\textbackslash{}beta_\{0\} + \textbackslash{}\textbackslash{}sum_\{i=1\}^\{5\}\textbackslash{}\textbackslash{}left[\textbackslash{}\textbackslash{}beta_\{i\}cos(2i\textbackslash{}\textbackslash{}pi t) + \textbackslash{}\textbackslash{}psi_\{i\}sin(2i\textbackslash{}\textbackslash{}pi t)\textbackslash{}\textbackslash{}right] + e_\{t\}$"}
 \hlstd{df_nt.sh5} \hlkwb{<-} \hlkwd{summary}\hlstd{(lm_nt.sh5)}\hlopt{$}\hlstd{df[}\hlnum{1}\hlstd{]}
 \hlstd{aic_nt.sh5} \hlkwb{<-} \hlkwd{AIC}\hlstd{(lm_nt.sh5)}
 \hlstd{nt.sh5} \hlkwb{<-} \hlkwd{data.frame}\hlstd{(}\hlstr{"No Year, 5th Order Harmonic"}\hlstd{, df_nt.sh5, aic_nt.sh5)}
 
 \hlstd{lm_lt.sh5} \hlkwb{<-} \hlkwd{lm}\hlstd{(value} \hlopt{~} \hlstd{year} \hlopt{+} \hlkwd{harmonic}\hlstd{(monthts,} \hlkwc{m} \hlstd{=} \hlnum{5}\hlstd{),} \hlkwc{data} \hlstd{= mex)}
-\hlstd{mod_lt.sh5} \hlkwb{<-} \hlstr{"$y_\{t\} = \textbackslash{}\textbackslash{}gamma_\{0\} + \textbackslash{}\textbackslash{}gamma_\{1\}year + \textbackslash{}\textbackslash{}Sigma_\{i=1:5\} \textbackslash{}\textbackslash{}beta_\{i\}cos(2i\textbackslash{}\textbackslash{}pi f(t)) + \textbackslash{}\textbackslash{}psi_\{i\}sin(2i\textbackslash{}\textbackslash{}pi f(t)) + e_\{t\}$"}
+\hlstd{mod_lt.sh5} \hlkwb{<-} \hlstr{"$y_\{t\} = \textbackslash{}\textbackslash{}gamma_\{0\} + \textbackslash{}\textbackslash{}gamma_\{1\}t + \textbackslash{}\textbackslash{}sum_\{i=1\}^\{5\}\textbackslash{}\textbackslash{}left[\textbackslash{}\textbackslash{}beta_\{i\}cos(2i\textbackslash{}\textbackslash{}pi t) + \textbackslash{}\textbackslash{}psi_\{i\}sin(2i\textbackslash{}\textbackslash{}pi t)\textbackslash{}\textbackslash{}right] + e_\{t\}$"}
 \hlstd{df_lt.sh5} \hlkwb{<-} \hlkwd{summary}\hlstd{(lm_lt.sh5)}\hlopt{$}\hlstd{df[}\hlnum{1}\hlstd{]}
 \hlstd{aic_lt.sh5} \hlkwb{<-} \hlkwd{AIC}\hlstd{(lm_lt.sh5)}
 \hlstd{lt.sh5} \hlkwb{<-} \hlkwd{data.frame}\hlstd{(}\hlstr{"Linear Year, 5th Order Harmonic"}\hlstd{, df_lt.sh5, aic_lt.sh5)}
 
 \hlstd{lm_qt.sh5} \hlkwb{<-} \hlkwd{lm}\hlstd{(value} \hlopt{~} \hlkwd{poly}\hlstd{(year,} \hlnum{2}\hlstd{)} \hlopt{+} \hlkwd{harmonic}\hlstd{(monthts,} \hlkwc{m} \hlstd{=} \hlnum{5}\hlstd{),} \hlkwc{data} \hlstd{= mex)}
-\hlstd{mod_qt.sh5} \hlkwb{<-} \hlstr{"$y_\{t\} = \textbackslash{}\textbackslash{}gamma_\{0\} + \textbackslash{}\textbackslash{}gamma_\{1\}year + \textbackslash{}\textbackslash{}gamma_\{1\}year^\{2\} +
-               \textbackslash{}\textbackslash{}Sigma_\{i=1:5\} \textbackslash{}\textbackslash{}beta_\{i\}cos(2i\textbackslash{}\textbackslash{}pi f(t)) + \textbackslash{}\textbackslash{}psi_\{i\}sin(2i\textbackslash{}\textbackslash{}pi f(t)) + e_\{t\}$"}
+\hlstd{mod_qt.sh5} \hlkwb{<-} \hlstr{"$y_\{t\} = \textbackslash{}\textbackslash{}gamma_\{0\} + \textbackslash{}\textbackslash{}gamma_\{1\}t + \textbackslash{}\textbackslash{}gamma_\{1\}t^\{2\} +
+\textbackslash{}\textbackslash{}sum_\{i=1\}^\{5\}\textbackslash{}\textbackslash{}left[\textbackslash{}\textbackslash{}beta_\{i\}cos(2i\textbackslash{}\textbackslash{}pi t) + \textbackslash{}\textbackslash{}psi_\{i\}sin(2i\textbackslash{}\textbackslash{}pi t)\textbackslash{}\textbackslash{}right] + e_\{t\}$"}
 \hlstd{df_qt.sh5} \hlkwb{<-} \hlkwd{summary}\hlstd{(lm_qt.sh5)}\hlopt{$}\hlstd{df[}\hlnum{1}\hlstd{]}
 \hlstd{aic_qt.sh5} \hlkwb{<-} \hlkwd{AIC}\hlstd{(lm_qt.sh5)}
 \hlstd{qt.sh5} \hlkwb{<-} \hlkwd{data.frame}\hlstd{(}\hlstr{"Quadratic Year, 5th Order Harmonic"}\hlstd{, df_qt.sh5, aic_qt.sh5)}
