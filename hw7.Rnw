@@ -283,7 +283,7 @@ lines(lm_lt.sh5$fitted.values~time(mex$year), type = "l", col = "purple", pch = 
 \end{center}
 
 \item%5
-{\it Revisit your simulation with an AR(1) from HW 6 # 10. Consider fitting a model with autocorrelation in it using ``gls" from the ``nlme" package that accounts for an MA(1) error and another that accounts for an AR(1) error. Run your simulation code, extracting the p-values from the two model summaries and estimate the type I error rate in each situation and compare it to what you get from the regular linear model. 
+{\it Revisit your simulation with an AR(1) from HW 6 # 8. Consider fitting a model with autocorrelation in it using ``gls" from the ``nlme" package that accounts for an MA(1) error and another that accounts for an AR(1) error. Run your simulation code, extracting the p-values from the two model summaries and estimate the type I error rate in each situation and compare it to what you get from the regular linear model. 
 
 <<prob5>>=
 
@@ -310,7 +310,44 @@ legend("topright", lwd = 2, lty = 1:3, col = c("black", "purple", "red"),
 
 #corAR1 == AR1 process
 #corARMA == autoregressive moving avg
-gls_ar1_obs <- gls(PropDays ~ Year, data = Data1, correlation = corAR1())
+gls_ar1_obs <- gls(PropDays ~ Year, data = Data1, correlation = corARMA(p=1,q=0))
+
+gls_ma1_obs <- gls(PropDays ~ Year, data = Data1, correlation = corARMA(p = 0, q = 1))
+
+#generate random errors from the ar1 process where the first lag autocorrelation is 0.6
+ar1sim <- data.frame(replicate(1000, arima.sim(n = 109, model=list(ar=c(0.6), sd=sqrt(0.0006664659)))))
+
+#write fn to extract year coefficient from models
+fnt_ar1 <- function(s,t){
+  gls(t ~ s, correlation = corARMA(p=1,q=0))
+}
+
+fnt_ma1 <- function(s,t){
+  gls(t ~ s, correlation = corARMA(p=0,q=1))
+}
+
+#fn wasn't liking having Data1$Year, or calling on data = Data1 so changed it
+modar1_year <- lapply(ar1sim[,1:1000], function(a){fnt_ar1(Data1$Year,a)})
+
+modma1_year <- lapply(ar1sim[,1:1000], function(a){fnt_ma1(Data1$Year,a)})
+
+ciar1_year <- lapply(modar1_year, confint)
+cima1_year <- lapply(modma1_year, confint)
+
+fnt_coeff <- function(t){
+  coef(summary(modma1_year$t))[2,4]
+}
+
+Xmatrix <- c(rep("X",1000))
+nums <- c(1:1000)
+nums <- as.character(nums)
+col_year <- paste(Xmatrix,nums, sep = "")
+
+modma1_year$col_year[1]
+
+coefar1_year <- lapply(modar1_year, fnt_coeff)
+coefma1_year <- lapply(mod)
+
 
 gls_ar1_out <- coef(gls_ar1_obs)[2]
 
@@ -327,6 +364,8 @@ pvalue_ar1 <- (length(which(gls_ar1 <= gls_ar1_out)) + length(which(gls_ar1 >= -
 
 #pvalue_ma <- (length(which(gls_ma <= gls_ma_out)) + length(which(gls_ma >= -gls_ma_out)))/length(gls_ma)
 
+#taken from hw6 solutions
+arima.sim(n=109,model=list(ar=c(0.6)),sd=sqrt(0.0006664659))
 @
 
 - In a ``gls" model summary, the estimates, SEs, test statistics, and p-values are contained in the `tTable` part of the summary. It has a similar layout to `coef` that we pulled the [2,4] element from to get the p-value from ``lm".}
