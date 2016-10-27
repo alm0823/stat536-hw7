@@ -117,7 +117,8 @@ aic_lt.ns <- AIC(lm_lt.ns)
 lt.ns <- c("Linear Year, No Seasonality", df_lt.ns, aic_lt.ns)
 
 lm_qt.ns <- lm(value ~ poly(year, degree = 2), data = mex)
-mod_qt.ns <- paste("$y_{t}$ = $\\gamma_{o} + \\gamma_{1}year + \\gamma_{1}year^{2} + e_{t}$")
+mod_qt.ns <- paste("$y_{t}$ = $\\gamma_{o} + 
+                   \\gamma_{1}year + \\gamma_{1}year^{2} + e_{t}$")
 df_qt.ns <- summary(lm_qt.ns)$df[1]
 aic_qt.ns <- AIC(lm_qt.ns)
 qt.ns <- c("Quadratic Year, No Seasonality", df_qt.ns, aic_qt.ns)
@@ -125,23 +126,31 @@ qt.ns <- c("Quadratic Year, No Seasonality", df_qt.ns, aic_qt.ns)
 ## seasonal means
 
 lm_nt.sm <- lm(value ~ as.factor(month), data = mex)
-mod_nt.sm <- paste("$y_{t}$ = $\\beta_{1}jan.ind + \\beta_{2}feb.ind + \\beta_{3}mar.ind + \\beta_{4}apr.ind + 
-               \\beta_{5}may.ind + \\beta_{6}june.ind + \\beta_{7}july.ind + \\beta_{8}aug.ind + \\beta_{9}sept.ind +
-               \\beta_{10}oct.ind + \\beta_{11}nov.ind + \\beta_{12}dec.ind + e_{t}$")
+mod_nt.sm <- paste("$y_{t}$ = $\\beta_{1}jan.ind + \\beta_{2}feb.ind + 
+\\beta_{3}mar.ind + \\beta_{4}apr.ind + 
+               \\beta_{5}may.ind + \\beta_{6}june.ind + \\beta_{7}july.ind + 
+\\beta_{8}aug.ind + \\beta_{9}sept.ind +
+               \\beta_{10}oct.ind + \\beta_{11}nov.ind + 
+\\beta_{12}dec.ind + e_{t}$")
 df_nt.sm <- summary(lm_nt.sm)$df[1]
 aic_nt.sm <- AIC(lm_nt.sm)
 nt.sm <- c("No Year, 5th Order Harmonic", df_nt.sm, aic_nt.sm)
 
 lm_lt.sm <- lm(value ~ year + as.factor(month), data = mex)
-mod_lt.sm <- paste("$y_{t}$ = $\\gamma_{1}year + \\beta_{1}jan.ind  + \\beta_{2}feb.ind + \\beta_{3}mar.ind + \\beta_{4}apr.ind + 
-               \\beta_{5}may.ind + \\beta_{6}june.ind + \\beta_{7}july.ind + \\beta_{8}aug.ind + \\beta_{9}sept.ind +
-               \\beta_{10}oct.ind + \\beta_{11}nov.ind + \\beta_{12}dec.ind + e_{t}$")
+mod_lt.sm <- paste("$y_{t}$ = $\\gamma_{1}year + \\beta_{1}jan.ind  + 
+\\beta_{2}feb.ind + \\beta_{3}mar.ind + \\beta_{4}apr.ind + 
+               \\beta_{5}may.ind + \\beta_{6}june.ind + \\beta_{7}july.ind + 
+\\beta_{8}aug.ind + \\beta_{9}sept.ind +
+               \\beta_{10}oct.ind + \\beta_{11}nov.ind + 
+\\beta_{12}dec.ind + e_{t}$")
 df_lt.sm <- summary(lm_lt.sm)$df[1]
 aic_lt.sm <- AIC(lm_lt.sm)
 lt.sm <- c("Linear Year, Seasonal Means", df_lt.sm, aic_lt.sm)
 
 lm_qt.sm <- lm(value ~ poly(year, degree = 2) + as.factor(month), data = mex)
-mod_qt.sm <- paste("$y_{t}$ = $\\gamma_{1}year + \\gamma_{2}year^{2} + \\beta_{1}jan.ind + \\beta_{2}feb.ind + \\beta_{3}mar.ind + \\beta_{4}apr.ind + \\beta_{5}may.ind + \\beta_{6}june.ind + \\beta_{7}july.ind + \\beta_{8}aug.ind + \\beta_{9}sept.ind +
+mod_qt.sm <- paste("$y_{t}$ = $\\gamma_{1}year + \\gamma_{2}year^{2} + 
+\\beta_{1}jan.ind + \\beta_{2}feb.ind + \\beta_{3}mar.ind + \\beta_{4}apr.ind + 
+\\beta_{5}may.ind + \\beta_{6}june.ind + \\beta_{7}july.ind + \\beta_{8}aug.ind + \\beta_{9}sept.ind +
                \\beta_{10}oct.ind + \\beta_{11}nov.ind + \\beta_{12}dec.ind + e_{t}$")
 df_qt.sm <- summary(lm_qt.sm)$df[1]
 aic_qt.sm <- AIC(lm_qt.sm)
@@ -151,24 +160,29 @@ qt.sm <- c("Quadratic Year, 5th Order Harmonic", df_qt.sm, aic_qt.sm)
 #harmonic() generates sines and cosines 
 #note: time unit affects frequency measure
 #discuss: what does m do?  Ho: the number of cycles
-#discuss: is there a phi component? the help file doesn't have one and I don't understand what is meant by "phase" = phi
+#discuss: is there a phi component? the help file doesn't have one 
+#and I don't understand what is meant by "phase" = phi
 #discuss: what is t here?
 mex$monthts <- ts(mex$month, frequency = 12)
 
 lm_nt.sh1 <- lm(value ~ harmonic(monthts, m = 1), data = mex)
-mod_nt.sh1 <- paste("$y_{t} = \\beta_{0} + \\beta_{1}cos(2\\pif(t)) + \\beta_{2}sin(2\\pif(t)) + e_{t}$")
+mod_nt.sh1 <- paste("$y_{t} = \\beta_{0} + \\beta_{1}cos(2\\pif(t)) + 
+                    \\beta_{2}sin(2\\pif(t)) + e_{t}$")
 df_nt.sh1 <- summary(lm_nt.sh1)$df[1]
 aic_nt.sh1 <- AIC(lm_nt.sh1)
 nt.sh1 <- c("No Year, 1st Order Harmonic", df_nt.sh1, aic_nt.sh1)
 
 lm_lt.sh1 <- lm(value ~ year + harmonic(monthts, m = 1), data = mex)
-mod_lt.sh1 <- paste("$y_{t} = \\gamma_{0} + \\gamma_{1}year + \\beta_{1}cos(2\\pif(t)) + \\beta_{2}sin(2\\pif(t)) + e_{t}$")
+mod_lt.sh1 <- paste("$y_{t} = \\gamma_{0} + \\gamma_{1}year + 
+                    \\beta_{1}cos(2\\pif(t)) + \\beta_{2}sin(2\\pif(t)) + e_{t}$")
 df_lt.sh1 <- summary(lm_lt.sh1)$df[1]
 aic_lt.sh1 <- AIC(lm_lt.sh1)
 lt.sh1 <- c("Linear Year, 1st Order Harmonic", df_lt.sh1, aic_lt.sh1)
 
 lm_qt.sh1 <- lm(value ~ poly(year, 2) + harmonic(monthts, m = 1), data = mex)
-mod_qt.sh1 <- paste("$y_{t} = \\gamma_{0} + \\gamma_{1}year + \\gamma_{2}year^{2} + \\beta_{1}cos(2\\pif(t)) + \\beta_{2}sin(2\\pif(t)) + e_{t}$")
+mod_qt.sh1 <- paste("$y_{t} = \\gamma_{0} + \\gamma_{1}year + 
+                    \\gamma_{2}year^{2} + \\beta_{1}cos(2\\pif(t)) + 
+                    \\beta_{2}sin(2\\pif(t)) + e_{t}$")
 df_qt.sh1 <- summary(lm_qt.sh1)$df[1]
 aic_qt.sh1 <- AIC(lm_qt.sh1)
 qt.sh1 <- c("Quadratic Year, 1st Order Harmonic", df_qt.sh1, aic_qt.sh1)
@@ -176,42 +190,52 @@ qt.sh1 <- c("Quadratic Year, 1st Order Harmonic", df_qt.sh1, aic_qt.sh1)
 ## m = 5
 
 lm_nt.sh5 <- lm(value ~ harmonic(monthts, m = 5), data = mex)
-mod_nt.sh5 <- paste("$y_{t} = \\beta_{0} + \\Sigma_{i=1:5} \\beta_{i}cos(2i\\pif(t)) + \\psi_{i}sin(2i\\pif(t)) + e_{t}$")
+mod_nt.sh5 <- paste("$y_{t} = \\beta_{0} + \\Sigma_{i=1:5} \\beta_{i}cos(2i\\pif(t)) + 
+                    \\psi_{i}sin(2i\\pif(t)) + e_{t}$")
 df_nt.sh5 <- summary(lm_nt.sh5)$df[1]
 aic_nt.sh5 <- AIC(lm_nt.sh5)
 nt.sh5 <- c("No Year, 5th Order Harmonic", df_nt.sh5, aic_nt.sh5)
 
 lm_lt.sh5 <- lm(value ~ year + harmonic(monthts, m = 5), data = mex)
-mod_lt.sh5 <- paste("$y_{t} = \\gamma_{0} + \\gamma_{1}year + \\Sigma_{i=1:5} \\beta_{i}cos(2i\\pif(t)) + \\psi_{i}sin(2i\\pif(t)) + e_{t}$")
+mod_lt.sh5 <- paste("$y_{t} = \\gamma_{0} + \\gamma_{1}year + \\Sigma_{i=1:5} 
+                    \\beta_{i}cos(2i\\pif(t)) + \\psi_{i}sin(2i\\pif(t)) + e_{t}$")
 df_lt.sh5 <- summary(lm_lt.sh5)$df[1]
 aic_lt.sh5 <- AIC(lm_lt.sh5)
 lt.sh5 <- c("Linear Year, 5th Order Harmonic", df_lt.sh5, aic_lt.sh5)
 
 lm_qt.sh5 <- lm(value ~ poly(year, 2) + harmonic(monthts, m = 5), data = mex)
-mod_qt.sh5 <- paste("$y_{t} = \\gamma_{0} + \\gamma_{1}year + \\gamma_{1}year^{2} + \\Sigma_{i=1:5} \\beta_{i}cos(2i\\pif(t)) + \\psi_{i}sin(2i\\pif(t)) + e_{t}$")
+mod_qt.sh5 <- paste("$y_{t} = \\gamma_{0} + \\gamma_{1}year + \\gamma_{1}year^{2} + 
+                    \\Sigma_{i=1:5} \\beta_{i}cos(2i\\pif(t)) + \\psi_{i}sin(2i\\pif(t)) + e_{t}$")
 df_qt.sh5 <- summary(lm_qt.sh5)$df[1]
 aic_qt.sh5 <- AIC(lm_qt.sh5)
 qt.sh5 <- c("Quadratic Year, 5th Order Harmonic", df_qt.sh5, aic_qt.sh5)
 
-df_all <- data.frame(rbind(nt.ns, lt.ns, qt.ns, nt.sm, lt.sm, qt.sm, nt.sh1, lt.sh1, qt.sh1, nt.sh5, lt.sh5, qt.sh5))
+df_all <- data.frame(rbind(nt.ns, lt.ns, qt.ns, nt.sm, lt.sm, qt.sm, nt.sh1, 
+                           lt.sh1, qt.sh1, nt.sh5, lt.sh5, qt.sh5))
 colnames(df_all) <- c("Model", "Free DF", "AIC")
 
 df_all <- arrange(df_all, AIC)
 
 df_all$AIC <- round(as.numeric(as.character(df_all$AIC)), 2)
-df_all$deltaAIC <- round(as.numeric(as.character(df_all$AIC)), 2) - round(as.numeric(as.character(df_all$AIC[1])), 2)
+df_all$deltaAIC <- round(as.numeric(as.character(df_all$AIC)), 2) - 
+  round(as.numeric(as.character(df_all$AIC[1])), 2)
 colnames(df_all) <- c("Model", "Free DF", "AIC", "deltaAIC")
 
 print(xtable(df_all), include.rownames = FALSE)
 
 
-all_mod <- data.frame(rbind(mod_qt.sh5, mod_lt.sh5, mod_nt.sh5, mod_qt.sh1, mod_lt.sh1, mod_nt.sh1, mod_qt.sm, mod_lt.sm, mod_nt.sm, mod_qt.ns, mod_lt.ns, mod_nt.ns))
+all_mod <- data.frame(rbind(mod_qt.sh5, mod_lt.sh5, mod_nt.sh5, 
+                            mod_qt.sh1, mod_lt.sh1, mod_nt.sh1, mod_qt.sm, mod_lt.sm, mod_nt.sm, mod_qt.ns, mod_lt.ns, mod_nt.ns))
 
-row.names(all_mod) <- c("Quadratic Year, 5th Order Harmonic", "Linear Year, 5th Order Harmonic", "No Year, 5th Order Harmonic", "Quadratic Year, 1st Order Harmonic", "Linear Year, 1st Order Harmonic", "No Year, 1st Order Harmonic", "Quadratic Year, Seasonal Means", "Linear Year, Seasonal Means", "No Year, Seasonal Means", "Quadratic Year, No Seasonality", "Linear Year, No Seasonality", "No Year, No Seasonality")
+row.names(all_mod) <- c("Quadratic Year, 5th Order Harmonic", 
+                        "Linear Year, 5th Order Harmonic", "No Year, 5th Order Harmonic", 
+                        "Quadratic Year, 1st Order Harmonic", "Linear Year, 1st Order Harmonic", 
+                        "No Year, 1st Order Harmonic", "Quadratic Year, Seasonal Means", 
+                        "Linear Year, Seasonal Means", "No Year, Seasonal Means", 
+                        "Quadratic Year, No Seasonality", "Linear Year, No Seasonality", 
+                        "No Year, No Seasonality")
 
 colnames(all_mod) <- " "
-
-print(xtable(all_mod))
 
 xtable(Anova(lm_lt.sh5, type = "II"))
 @
@@ -248,7 +272,8 @@ To model the complexity in the long term component, we need about one parameter 
 
 <<prob2>>=
 mex$yearts <- ts(mex$year, frequency = 12)
-gam1 <- gam(value ~ s(time(yearts), k = 7, bs = "ts") + s(monthts, k = 12, bs = "cc"), data = mex)
+gam1 <- gam(value ~ s(time(yearts), k = 7, bs = "ts") + 
+              s(monthts, k = 12, bs = "cc"), data = mex)
 
 par(mfrow = c(1,2))
 plot(gam1)
@@ -269,13 +294,10 @@ gam1.edf <- sum((gam1)$edf)
 \item%4
 {\it Compare the fitted values of your GAM to those from your top model, plotting the two models's results and the responses vs time on the same plot.}
 
-<<prob4>>=
-par(mfrow=c(1,1))
-plot(mex$value~time(mex$year), type = "l", ylab = expression(CO[2]))
-text(1, at = c(seq(0,80,by=13.33)), labels = c(seq(min(mex$year), max(mex$year), by = 1)), str = 45, pos = 2)
-lines(gam1$fitted~time(mex$year), type = "l", col = 507, pch = 3)
-lines(lm_lt.sh5$fitted.values~time(mex$year), type = "l", col = "purple", pch = 2)
+All plots of fitted values are very similar. The main difference is in the peaks and the troughs, being slightly higher or slightly lower than what was observed. 
 
+<<prob4>>=
+ggplot(data = mex, aes(x = time(year), y = value)) + geom_line() + scale_x_continuous(breaks = c(seq(0,80,by=13.33)), labels = c(seq(min(mex$year), max(mex$year), by = 1))) + ylab(expression("CO_2")) + xlab("Year") + theme_bw() + geom_line(data = mex, aes(x = time(mex$year), y = gam1$fitted, col = "GAM")) + geom_line(data = mex, aes(x = time(mex$year), y = lm_lt.sh5$fitted.values, col = "Linear Harm5")) + theme(legend.position = "bottom")
 @
 
 \begin{center}
@@ -285,7 +307,7 @@ lines(lm_lt.sh5$fitted.values~time(mex$year), type = "l", col = "purple", pch = 
 \item%5
 {\it Revisit your simulation with an AR(1) from HW 6 # 8. Consider fitting a model with autocorrelation in it using ``gls" from the ``nlme" package that accounts for an MA(1) error and another that accounts for an AR(1) error. Run your simulation code, extracting the p-values from the two model summaries and estimate the type I error rate in each situation and compare it to what you get from the regular linear model. 
 
-<<prob5>>=
+<<prob5, eval = FALSE>>=
 
 Bozeman<-read.csv("Bozeman.csv",header=T)
 
@@ -315,7 +337,8 @@ gls_ar1_obs <- gls(PropDays ~ Year, data = Data1, correlation = corARMA(p=1,q=0)
 gls_ma1_obs <- gls(PropDays ~ Year, data = Data1, correlation = corARMA(p = 0, q = 1))
 
 #generate random errors from the ar1 process where the first lag autocorrelation is 0.6
-ar1sim <- data.frame(replicate(1000, arima.sim(n = 109, model=list(ar=c(0.6), sd=sqrt(0.0006664659)))))
+ar1sim <- data.frame(replicate(1000, arima.sim(n = 109, 
+                                               model=list(ar=c(0.6), sd=sqrt(0.0006664659)))))
 
 #write fn to extract year coefficient from models
 fnt_ar1 <- function(s,t){
@@ -399,6 +422,22 @@ If you have not completed STAT 421 or equivalent, please try the problem and the
 %\setcounter{enumi}{3}
 \item%1
 <<prob1, echo = TRUE, eval = FALSE>>=
+@
+
+\item%2
+<<prob2, echo = TRUE, eval = FALSE>>=
+@
+
+\item%3
+<<prob3, echo = TRUE, eval = FALSE>>=
+@
+
+\item%4
+<<prob4, echo = TRUE, eval = FALSE>>=
+@
+
+\item%5
+<<prob5, echo = TRUE, eval = FALSE>>=
 @
 
 \end{enumerate}
