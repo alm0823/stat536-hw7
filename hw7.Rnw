@@ -354,41 +354,32 @@ modar1_year <- lapply(ar1sim[,1:1000], function(a){fnt_ar1(Data1$Year,a)})
 
 modma1_year <- lapply(ar1sim[,1:1000], function(a){fnt_ma1(Data1$Year,a)})
 
-ciar1_year <- lapply(modar1_year, confint)
-cima1_year <- lapply(modma1_year, confint)
+ciar1_year <- lapply(modar1_year, function(a){confint(a)[2,]})
+cima1_year <- lapply(modma1_year, function(a){confint(a)[2,]})
 
-fnt_coeff <- function(t){
-  coef(summary(modma1_year$t))[2,4]
+fnt_pvalue <- function(s,t){
+  summary(gls(t ~ s, correlation = corARMA(p=0,q=1)))$tTable[2,4]
 }
 
-Xmatrix <- c(rep("X",1000))
-nums <- c(1:1000)
-nums <- as.character(nums)
-col_year <- paste(Xmatrix,nums, sep = "")
+fnt_pvalue_ma1 <- function(s,t){
+  summary(gls(t ~ s, correlation = corARMA(p=1,q=0)))$tTable[2,4]
+}
 
-modma1_year$col_year[1]
+modar1_pvalue <- apply(ar1sim[,1:1000], 2, function(a){fnt_pvalue(Data1$Year,a)})
 
-coefar1_year <- lapply(modar1_year, fnt_coeff)
-coefma1_year <- lapply(mod)
+modma1_pvalue <- apply(ar1sim[,1:1000], 2,function(a){fnt_pvalue_ma1(Data1$Year,a)})
+
+ar1_pvalue <- mean(modar1_pvalue<0.05)
+ma1_pvalue <- mean(modma1_pvalue<0.05)
+
+fnt.ci <- function(t){
+  max(cima1_year[t]) > 0 & min(cima1_year[t] <= 0) <- "ftr" 
+}
+
+e <- c(1:1000)
+ci.ind_ma1 <- sapply(e, fnt.ci)
 
 
-gls_ar1_out <- coef(gls_ar1_obs)[2]
-
-gls_ma_obs <- gls(PropDays ~ Year, data = Data1, correlation = corARMA())
-
-gls_ma_out <- coef(gls_ma_obs)[2]
-
-gls_ar1 <- replicate(1000, coef(gls(PropDays ~ shuffle(Year), data = Data1, correlation = corAR1()))[2])
-
-#error ??
-gls_ma <- replicate(1000, coef(gls(PropDays ~ shuffle(Year), data = Data1, correlation = corARMA()))[2])
-
-pvalue_ar1 <- (length(which(gls_ar1 <= gls_ar1_out)) + length(which(gls_ar1 >= -gls_ar1_out)))/length(gls_ar1)
-
-#pvalue_ma <- (length(which(gls_ma <= gls_ma_out)) + length(which(gls_ma >= -gls_ma_out)))/length(gls_ma)
-
-#taken from hw6 solutions
-arima.sim(n=109,model=list(ar=c(0.6)),sd=sqrt(0.0006664659))
 @
 
 - In a ``gls" model summary, the estimates, SEs, test statistics, and p-values are contained in the `tTable` part of the summary. It has a similar layout to `coef` that we pulled the [2,4] element from to get the p-value from ``lm".}
