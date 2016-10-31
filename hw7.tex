@@ -21,7 +21,6 @@
 \newcommand{\hlkwb}[1]{\textcolor[rgb]{0,0,0}{\textbf{#1}}}%
 \newcommand{\hlkwc}[1]{\textcolor[rgb]{0,0,0}{\textbf{#1}}}%
 \newcommand{\hlkwd}[1]{\textcolor[rgb]{0,0,0}{\textbf{#1}}}%
-\let\hlipl\hlkwb
 
 \usepackage{framed}
 \makeatletter
@@ -128,7 +127,7 @@ is filled.
   
   
 % latex table generated in R 3.3.1 by xtable 1.8-2 package
-% Thu Oct 27 13:50:02 2016
+% Fri Oct 28 13:49:10 2016
 \begin{table}[H]
 \centering
 \begin{tabular}{llrr}
@@ -151,7 +150,7 @@ Linear Year, 5th Order Harmonic & 12 & 202.38 & 0.00 \\
 \end{tabular}
 \end{table}
 % latex table generated in R 3.3.1 by xtable 1.8-2 package
-% Thu Oct 27 13:50:02 2016
+% Fri Oct 28 13:49:10 2016
 \begin{table}[H]
 \centering
 \begin{tabular}{lrrrr}
@@ -193,24 +192,24 @@ Quadratic Year, Seasonal Means $y_{t}$ = $\gamma_{1}year + \gamma_{2}year^{2} +
 \beta_{5}may.ind + \beta_{6}june.ind + \beta_{7}july.ind + \beta_{8}aug.ind + \beta_{9}sept.ind +
                \beta_{10}oct.ind + \beta_{11}nov.ind + \beta_{12}dec.ind + e_{t}$
 
-No Year, 1st Order Harmonic $y_{t} = \beta_{0} + \beta_{1}cos(2\pif(t)) + 
-                    \beta_{2}sin(2\pif(t)) + e_{t}$
+No Year, 1st Order Harmonic $y_{t} = \beta_{0} + \beta_{1}cos(2\pi f(t)) + 
+                    \beta_{2}sin(2\pi f(t)) + e_{t}$
 
 Linear Year, 1st Order Harmonic $y_{t} = \gamma_{0} + \gamma_{1}year + 
-                    \beta_{1}cos(2\pif(t)) + \beta_{2}sin(2\pif(t)) + e_{t}$
+                    \beta_{1}cos(2\pi f(t)) + \beta_{2}sin(2\pi f(t)) + e_{t}$
 
 Quadratic year, 1st Order Harmonic $y_{t} = \gamma_{0} + \gamma_{1}year + 
-                    \gamma_{2}year^{2} + \beta_{1}cos(2\pif(t)) + 
-                    \beta_{2}sin(2\pif(t)) + e_{t}$
+                    \gamma_{2}year^{2} + \beta_{1}cos(2\pi f(t)) + 
+                    \beta_{2}sin(2\pi f(t)) + e_{t}$
 
-No Year, 5th Order Harmonic $y_{t} = \beta_{0} + \Sigma_{i=1:5} \beta_{i}cos(2i\pif(t)) + 
-                    \psi_{i}sin(2i\pif(t)) + e_{t}$
+No Year, 5th Order Harmonic $y_{t} = \beta_{0} + \Sigma_{i=1:5} \beta_{i}cos(2i\pi f(t)) + 
+                    \psi_{i}sin(2i\pi f(t)) + e_{t}$
 
 Linear Year, 5th Order Harmonic $y_{t} = \gamma_{0} + \gamma_{1}year + \Sigma_{i=1:5} 
-                    \beta_{i}cos(2i\pif(t)) + \psi_{i}sin(2i\pif(t)) + e_{t}$
+                    \beta_{i}cos(2i\pif(t)) + \psi_{i}sin(2i\pi f(t)) + e_{t}$
 
 Quadratic Year, 5th Order Harmonic $y_{t} = \gamma_{0} + \gamma_{1}year + \gamma_{1}year^{2} + 
-                    \Sigma_{i=1:5} \beta_{i}cos(2i\pif(t)) + \psi_{i}sin(2i\pif(t)) + e_{t}$
+                    \Sigma_{i=1:5} \beta_{i}cos(2i\pif(t)) + \psi_{i}sin(2i\pi f(t)) + e_{t}$
 
 \item%2
 {\it Now fit a ``gam" from the ``mgcv" package that includes a long-term trend based on a thin-plate spline with shrinkage that uses `k=#years,bs="ts"` from the fractional year variable and a cyclic spline seasonal component. To build the cyclic spline component, use the numerically coded month variable that goes from 1 to 12 and {\texttt k=12,bs=``cc"}. Fit the model, plot the long-term trend and the seasonal component (use ``plot(gam$\_$model)"), and discuss the estimated components, using both the plots and the EDF of each term.} 
@@ -274,6 +273,10 @@ All plots of fitted values are very similar. The main difference is in the peaks
 
 
 - In a ``gls" model summary, the estimates, SEs, test statistics, and p-values are contained in the `tTable` part of the summary. It has a similar layout to `coef` that we pulled the [2,4] element from to get the p-value from ``lm".}
+
+We generated responses from an AR1 process and fit two models, one that accounted for an AR1 correlation and one that accounted for a moving average correlation. We simulated 1000 of each type of model and found the average number of models that resulted in pvalues for the yearly component less than 0.05. On average we ``rejected" at the 5\% significance level 5.6 \% of the time for the models with AR1 correlation structures and ``rejected" 19.2\% of the time for the models with correlation structures that accounted for a moving average. 
+
+As you can see, in the long run, we rejected very nearly at the specified Type I error rate when fitting a model with the AR1 correlation structure, as expected, because that is how the responses were generated. However, by only accounting for a MA1 correlation structure, we rejected too often for a specified 5\% error rate.
 
 \begin{center}
 {\large \bf{Some derivation practice (these can be handwritten). 
@@ -370,23 +373,23 @@ If you have not completed STAT 421 or equivalent, please try the problem and the
 \hlstd{mex}\hlopt{$}\hlstd{monthts} \hlkwb{<-} \hlkwd{ts}\hlstd{(mex}\hlopt{$}\hlstd{month,} \hlkwc{frequency} \hlstd{=} \hlnum{12}\hlstd{)}
 
 \hlstd{lm_nt.sh1} \hlkwb{<-} \hlkwd{lm}\hlstd{(value} \hlopt{~} \hlkwd{harmonic}\hlstd{(monthts,} \hlkwc{m} \hlstd{=} \hlnum{1}\hlstd{),} \hlkwc{data} \hlstd{= mex)}
-\hlstd{mod_nt.sh1} \hlkwb{<-} \hlkwd{paste}\hlstd{(}\hlstr{"$y_\{t\} = \textbackslash{}\textbackslash{}beta_\{0\} + \textbackslash{}\textbackslash{}beta_\{1\}cos(2\textbackslash{}\textbackslash{}pif(t)) + 
-                    \textbackslash{}\textbackslash{}beta_\{2\}sin(2\textbackslash{}\textbackslash{}pif(t)) + e_\{t\}$"}\hlstd{)}
+\hlstd{mod_nt.sh1} \hlkwb{<-} \hlkwd{paste}\hlstd{(}\hlstr{"$y_\{t\} = \textbackslash{}\textbackslash{}beta_\{0\} + \textbackslash{}\textbackslash{}beta_\{1\}cos(2\textbackslash{}\textbackslash{}pi f(t)) + 
+                    \textbackslash{}\textbackslash{}beta_\{2\}sin(2\textbackslash{}\textbackslash{}pi f(t)) + e_\{t\}$"}\hlstd{)}
 \hlstd{df_nt.sh1} \hlkwb{<-} \hlkwd{summary}\hlstd{(lm_nt.sh1)}\hlopt{$}\hlstd{df[}\hlnum{1}\hlstd{]}
 \hlstd{aic_nt.sh1} \hlkwb{<-} \hlkwd{AIC}\hlstd{(lm_nt.sh1)}
 \hlstd{nt.sh1} \hlkwb{<-} \hlkwd{c}\hlstd{(}\hlstr{"No Year, 1st Order Harmonic"}\hlstd{, df_nt.sh1, aic_nt.sh1)}
 
 \hlstd{lm_lt.sh1} \hlkwb{<-} \hlkwd{lm}\hlstd{(value} \hlopt{~} \hlstd{year} \hlopt{+} \hlkwd{harmonic}\hlstd{(monthts,} \hlkwc{m} \hlstd{=} \hlnum{1}\hlstd{),} \hlkwc{data} \hlstd{= mex)}
 \hlstd{mod_lt.sh1} \hlkwb{<-} \hlkwd{paste}\hlstd{(}\hlstr{"$y_\{t\} = \textbackslash{}\textbackslash{}gamma_\{0\} + \textbackslash{}\textbackslash{}gamma_\{1\}year + 
-                    \textbackslash{}\textbackslash{}beta_\{1\}cos(2\textbackslash{}\textbackslash{}pif(t)) + \textbackslash{}\textbackslash{}beta_\{2\}sin(2\textbackslash{}\textbackslash{}pif(t)) + e_\{t\}$"}\hlstd{)}
+                    \textbackslash{}\textbackslash{}beta_\{1\}cos(2\textbackslash{}\textbackslash{}pi f(t)) + \textbackslash{}\textbackslash{}beta_\{2\}sin(2\textbackslash{}\textbackslash{}pi f(t)) + e_\{t\}$"}\hlstd{)}
 \hlstd{df_lt.sh1} \hlkwb{<-} \hlkwd{summary}\hlstd{(lm_lt.sh1)}\hlopt{$}\hlstd{df[}\hlnum{1}\hlstd{]}
 \hlstd{aic_lt.sh1} \hlkwb{<-} \hlkwd{AIC}\hlstd{(lm_lt.sh1)}
 \hlstd{lt.sh1} \hlkwb{<-} \hlkwd{c}\hlstd{(}\hlstr{"Linear Year, 1st Order Harmonic"}\hlstd{, df_lt.sh1, aic_lt.sh1)}
 
 \hlstd{lm_qt.sh1} \hlkwb{<-} \hlkwd{lm}\hlstd{(value} \hlopt{~} \hlkwd{poly}\hlstd{(year,} \hlnum{2}\hlstd{)} \hlopt{+} \hlkwd{harmonic}\hlstd{(monthts,} \hlkwc{m} \hlstd{=} \hlnum{1}\hlstd{),} \hlkwc{data} \hlstd{= mex)}
 \hlstd{mod_qt.sh1} \hlkwb{<-} \hlkwd{paste}\hlstd{(}\hlstr{"$y_\{t\} = \textbackslash{}\textbackslash{}gamma_\{0\} + \textbackslash{}\textbackslash{}gamma_\{1\}year + 
-                    \textbackslash{}\textbackslash{}gamma_\{2\}year^\{2\} + \textbackslash{}\textbackslash{}beta_\{1\}cos(2\textbackslash{}\textbackslash{}pif(t)) + 
-                    \textbackslash{}\textbackslash{}beta_\{2\}sin(2\textbackslash{}\textbackslash{}pif(t)) + e_\{t\}$"}\hlstd{)}
+                    \textbackslash{}\textbackslash{}gamma_\{2\}year^\{2\} + \textbackslash{}\textbackslash{}beta_\{1\}cos(2\textbackslash{}\textbackslash{}pi f(t)) + 
+                    \textbackslash{}\textbackslash{}beta_\{2\}sin(2\textbackslash{}\textbackslash{}pi f(t)) + e_\{t\}$"}\hlstd{)}
 \hlstd{df_qt.sh1} \hlkwb{<-} \hlkwd{summary}\hlstd{(lm_qt.sh1)}\hlopt{$}\hlstd{df[}\hlnum{1}\hlstd{]}
 \hlstd{aic_qt.sh1} \hlkwb{<-} \hlkwd{AIC}\hlstd{(lm_qt.sh1)}
 \hlstd{qt.sh1} \hlkwb{<-} \hlkwd{c}\hlstd{(}\hlstr{"Quadratic Year, 1st Order Harmonic"}\hlstd{, df_qt.sh1, aic_qt.sh1)}
@@ -394,22 +397,22 @@ If you have not completed STAT 421 or equivalent, please try the problem and the
 \hlcom{## m = 5}
 
 \hlstd{lm_nt.sh5} \hlkwb{<-} \hlkwd{lm}\hlstd{(value} \hlopt{~} \hlkwd{harmonic}\hlstd{(monthts,} \hlkwc{m} \hlstd{=} \hlnum{5}\hlstd{),} \hlkwc{data} \hlstd{= mex)}
-\hlstd{mod_nt.sh5} \hlkwb{<-} \hlkwd{paste}\hlstd{(}\hlstr{"$y_\{t\} = \textbackslash{}\textbackslash{}beta_\{0\} + \textbackslash{}\textbackslash{}Sigma_\{i=1:5\} \textbackslash{}\textbackslash{}beta_\{i\}cos(2i\textbackslash{}\textbackslash{}pif(t)) + 
-                    \textbackslash{}\textbackslash{}psi_\{i\}sin(2i\textbackslash{}\textbackslash{}pif(t)) + e_\{t\}$"}\hlstd{)}
+\hlstd{mod_nt.sh5} \hlkwb{<-} \hlkwd{paste}\hlstd{(}\hlstr{"$y_\{t\} = \textbackslash{}\textbackslash{}beta_\{0\} + \textbackslash{}\textbackslash{}Sigma_\{i=1:5\} \textbackslash{}\textbackslash{}beta_\{i\}cos(2i\textbackslash{}\textbackslash{}pi f(t)) + 
+                    \textbackslash{}\textbackslash{}psi_\{i\}sin(2i\textbackslash{}\textbackslash{}pi f(t)) + e_\{t\}$"}\hlstd{)}
 \hlstd{df_nt.sh5} \hlkwb{<-} \hlkwd{summary}\hlstd{(lm_nt.sh5)}\hlopt{$}\hlstd{df[}\hlnum{1}\hlstd{]}
 \hlstd{aic_nt.sh5} \hlkwb{<-} \hlkwd{AIC}\hlstd{(lm_nt.sh5)}
 \hlstd{nt.sh5} \hlkwb{<-} \hlkwd{c}\hlstd{(}\hlstr{"No Year, 5th Order Harmonic"}\hlstd{, df_nt.sh5, aic_nt.sh5)}
 
 \hlstd{lm_lt.sh5} \hlkwb{<-} \hlkwd{lm}\hlstd{(value} \hlopt{~} \hlstd{year} \hlopt{+} \hlkwd{harmonic}\hlstd{(monthts,} \hlkwc{m} \hlstd{=} \hlnum{5}\hlstd{),} \hlkwc{data} \hlstd{= mex)}
 \hlstd{mod_lt.sh5} \hlkwb{<-} \hlkwd{paste}\hlstd{(}\hlstr{"$y_\{t\} = \textbackslash{}\textbackslash{}gamma_\{0\} + \textbackslash{}\textbackslash{}gamma_\{1\}year + \textbackslash{}\textbackslash{}Sigma_\{i=1:5\} 
-                    \textbackslash{}\textbackslash{}beta_\{i\}cos(2i\textbackslash{}\textbackslash{}pif(t)) + \textbackslash{}\textbackslash{}psi_\{i\}sin(2i\textbackslash{}\textbackslash{}pif(t)) + e_\{t\}$"}\hlstd{)}
+                    \textbackslash{}\textbackslash{}beta_\{i\}cos(2i\textbackslash{}\textbackslash{}pif(t)) + \textbackslash{}\textbackslash{}psi_\{i\}sin(2i\textbackslash{}\textbackslash{}pi f(t)) + e_\{t\}$"}\hlstd{)}
 \hlstd{df_lt.sh5} \hlkwb{<-} \hlkwd{summary}\hlstd{(lm_lt.sh5)}\hlopt{$}\hlstd{df[}\hlnum{1}\hlstd{]}
 \hlstd{aic_lt.sh5} \hlkwb{<-} \hlkwd{AIC}\hlstd{(lm_lt.sh5)}
 \hlstd{lt.sh5} \hlkwb{<-} \hlkwd{c}\hlstd{(}\hlstr{"Linear Year, 5th Order Harmonic"}\hlstd{, df_lt.sh5, aic_lt.sh5)}
 
 \hlstd{lm_qt.sh5} \hlkwb{<-} \hlkwd{lm}\hlstd{(value} \hlopt{~} \hlkwd{poly}\hlstd{(year,} \hlnum{2}\hlstd{)} \hlopt{+} \hlkwd{harmonic}\hlstd{(monthts,} \hlkwc{m} \hlstd{=} \hlnum{5}\hlstd{),} \hlkwc{data} \hlstd{= mex)}
 \hlstd{mod_qt.sh5} \hlkwb{<-} \hlkwd{paste}\hlstd{(}\hlstr{"$y_\{t\} = \textbackslash{}\textbackslash{}gamma_\{0\} + \textbackslash{}\textbackslash{}gamma_\{1\}year + \textbackslash{}\textbackslash{}gamma_\{1\}year^\{2\} + 
-                    \textbackslash{}\textbackslash{}Sigma_\{i=1:5\} \textbackslash{}\textbackslash{}beta_\{i\}cos(2i\textbackslash{}\textbackslash{}pif(t)) + \textbackslash{}\textbackslash{}psi_\{i\}sin(2i\textbackslash{}\textbackslash{}pif(t)) + e_\{t\}$"}\hlstd{)}
+                    \textbackslash{}\textbackslash{}Sigma_\{i=1:5\} \textbackslash{}\textbackslash{}beta_\{i\}cos(2i\textbackslash{}\textbackslash{}pif(t)) + \textbackslash{}\textbackslash{}psi_\{i\}sin(2i\textbackslash{}\textbackslash{}pi f(t)) + e_\{t\}$"}\hlstd{)}
 \hlstd{df_qt.sh5} \hlkwb{<-} \hlkwd{summary}\hlstd{(lm_qt.sh5)}\hlopt{$}\hlstd{df[}\hlnum{1}\hlstd{]}
 \hlstd{aic_qt.sh5} \hlkwb{<-} \hlkwd{AIC}\hlstd{(lm_qt.sh5)}
 \hlstd{qt.sh5} \hlkwb{<-} \hlkwd{c}\hlstd{(}\hlstr{"Quadratic Year, 5th Order Harmonic"}\hlstd{, df_qt.sh5, aic_qt.sh5)}
@@ -497,16 +500,6 @@ If you have not completed STAT 421 or equivalent, please try the problem and the
 \hlstd{Data1}\hlkwb{<-}\hlkwd{data.frame}\hlstd{(}\hlkwc{Year}\hlstd{=yearcountMINF[,}\hlnum{1}\hlstd{],}\hlkwc{DaysBelow32}\hlstd{=yearcountMINF}\hlopt{$}\hlstd{x[,}\hlnum{1}\hlstd{],}
                   \hlkwc{MeasuredDays}\hlstd{=yearcountMINF}\hlopt{$}\hlstd{x[,}\hlnum{2}\hlstd{],}
                   \hlkwc{PropDays}\hlstd{=yearcountMINF}\hlopt{$}\hlstd{x[,}\hlnum{1}\hlstd{]}\hlopt{/}\hlstd{yearcountMINF}\hlopt{$}\hlstd{x[,}\hlnum{2}\hlstd{])}
-\hlkwd{plot}\hlstd{(PropDays} \hlopt{~} \hlstd{Year,} \hlkwc{data} \hlstd{= Data1,} \hlkwc{type} \hlstd{=} \hlstr{"l"}\hlstd{,} \hlkwc{ylim} \hlstd{=} \hlkwd{c}\hlstd{(}\hlnum{0}\hlstd{,}\hlnum{1}\hlstd{),}
-     \hlkwc{main} \hlstd{=} \hlstr{"Estimated Linear Trends"}\hlstd{,}
-     \hlkwc{ylab} \hlstd{=} \hlkwd{expression}\hlstd{(}\hlstr{"Proportion of Days Below 32"}\hlopt{*}\hlstd{degree}\hlopt{*}\hlstd{F))}
-\hlkwd{abline}\hlstd{(lm.Year,} \hlkwc{lwd} \hlstd{=} \hlnum{2}\hlstd{)}
-\hlkwd{abline}\hlstd{(model1s,} \hlkwc{col} \hlstd{=} \hlstr{"purple"}\hlstd{,} \hlkwc{lty} \hlstd{=} \hlnum{2}\hlstd{,} \hlkwc{lwd} \hlstd{=} \hlnum{2}\hlstd{)}
-\hlkwd{abline}\hlstd{(}\hlkwc{a} \hlstd{= zyp.Year}\hlopt{$}\hlstd{coefficients[}\hlnum{1}\hlstd{],} \hlkwc{b} \hlstd{=}
-         \hlstd{zyp.Year}\hlopt{$}\hlstd{coefficients[}\hlnum{2}\hlstd{],} \hlkwc{col} \hlstd{=} \hlstr{"red"}\hlstd{,} \hlkwc{lty} \hlstd{=} \hlnum{3}\hlstd{,} \hlkwc{lwd} \hlstd{=} \hlnum{2}\hlstd{)}
-\hlkwd{legend}\hlstd{(}\hlstr{"topright"}\hlstd{,} \hlkwc{lwd} \hlstd{=} \hlnum{2}\hlstd{,} \hlkwc{lty} \hlstd{=} \hlnum{1}\hlopt{:}\hlnum{3}\hlstd{,} \hlkwc{col} \hlstd{=} \hlkwd{c}\hlstd{(}\hlstr{"black"}\hlstd{,} \hlstr{"purple"}\hlstd{,} \hlstr{"red"}\hlstd{),}
-       \hlkwc{legend} \hlstd{=} \hlkwd{c}\hlstd{(}\hlstr{"OLS"}\hlstd{,} \hlstr{"Sen"}\hlstd{,} \hlstr{"Zhang"}\hlstd{))}
-
 \hlcom{#corAR1 == AR1 process}
 \hlcom{#corARMA == autoregressive moving avg}
 \hlstd{gls_ar1_obs} \hlkwb{<-} \hlkwd{gls}\hlstd{(PropDays} \hlopt{~} \hlstd{Year,} \hlkwc{data} \hlstd{= Data1,} \hlkwc{correlation} \hlstd{=} \hlkwd{corARMA}\hlstd{(}\hlkwc{p}\hlstd{=}\hlnum{1}\hlstd{,}\hlkwc{q}\hlstd{=}\hlnum{0}\hlstd{))}
@@ -527,45 +520,27 @@ If you have not completed STAT 421 or equivalent, please try the problem and the
 \hlstd{\}}
 
 \hlcom{#fn wasn't liking having Data1$Year, or calling on data = Data1 so changed it}
-\hlstd{modar1_year} \hlkwb{<-} \hlkwd{lapply}\hlstd{(ar1sim[,}\hlnum{1}\hlopt{:}\hlnum{1000}\hlstd{],} \hlkwa{function}\hlstd{(}\hlkwc{a}\hlstd{)\{}\hlkwd{fnt_ar1}\hlstd{(Data1}\hlopt{$}\hlstd{Year,a)\})}
+\hlstd{modar1_year} \hlkwb{<-} \hlkwd{apply}\hlstd{(ar1sim[,}\hlnum{1}\hlopt{:}\hlnum{1000}\hlstd{],} \hlnum{2}\hlstd{,} \hlkwa{function}\hlstd{(}\hlkwc{a}\hlstd{)\{}\hlkwd{fnt_ar1}\hlstd{(Data1}\hlopt{$}\hlstd{Year,a)\})}
 
-\hlstd{modma1_year} \hlkwb{<-} \hlkwd{lapply}\hlstd{(ar1sim[,}\hlnum{1}\hlopt{:}\hlnum{1000}\hlstd{],} \hlkwa{function}\hlstd{(}\hlkwc{a}\hlstd{)\{}\hlkwd{fnt_ma1}\hlstd{(Data1}\hlopt{$}\hlstd{Year,a)\})}
+\hlstd{modma1_year} \hlkwb{<-} \hlkwd{apply}\hlstd{(ar1sim[,}\hlnum{1}\hlopt{:}\hlnum{1000}\hlstd{],} \hlnum{2}\hlstd{,} \hlkwa{function}\hlstd{(}\hlkwc{a}\hlstd{)\{}\hlkwd{fnt_ma1}\hlstd{(Data1}\hlopt{$}\hlstd{Year,a)\})}
 
-\hlstd{ciar1_year} \hlkwb{<-} \hlkwd{lapply}\hlstd{(modar1_year, confint)}
-\hlstd{cima1_year} \hlkwb{<-} \hlkwd{lapply}\hlstd{(modma1_year, confint)}
+\hlstd{ciar1_year} \hlkwb{<-} \hlkwd{lapply}\hlstd{(modar1_year,} \hlkwa{function}\hlstd{(}\hlkwc{a}\hlstd{)\{}\hlkwd{confint}\hlstd{(a)[}\hlnum{2}\hlstd{,]\})}
+\hlstd{cima1_year} \hlkwb{<-} \hlkwd{lapply}\hlstd{(modma1_year,} \hlkwa{function}\hlstd{(}\hlkwc{a}\hlstd{)\{}\hlkwd{confint}\hlstd{(a)[}\hlnum{2}\hlstd{,]\})}
 
-\hlstd{fnt_coeff} \hlkwb{<-} \hlkwa{function}\hlstd{(}\hlkwc{t}\hlstd{)\{}
-  \hlkwd{coef}\hlstd{(}\hlkwd{summary}\hlstd{(modma1_year}\hlopt{$}\hlstd{t))[}\hlnum{2}\hlstd{,}\hlnum{4}\hlstd{]}
+\hlstd{fnt_pvalue} \hlkwb{<-} \hlkwa{function}\hlstd{(}\hlkwc{s}\hlstd{,}\hlkwc{t}\hlstd{)\{}
+  \hlkwd{summary}\hlstd{(}\hlkwd{gls}\hlstd{(t} \hlopt{~} \hlstd{s,} \hlkwc{correlation} \hlstd{=} \hlkwd{corARMA}\hlstd{(}\hlkwc{p}\hlstd{=}\hlnum{1}\hlstd{,}\hlkwc{q}\hlstd{=}\hlnum{0}\hlstd{)))}\hlopt{$}\hlstd{tTable[}\hlnum{2}\hlstd{,}\hlnum{4}\hlstd{]}
 \hlstd{\}}
 
-\hlstd{Xmatrix} \hlkwb{<-} \hlkwd{c}\hlstd{(}\hlkwd{rep}\hlstd{(}\hlstr{"X"}\hlstd{,}\hlnum{1000}\hlstd{))}
-\hlstd{nums} \hlkwb{<-} \hlkwd{c}\hlstd{(}\hlnum{1}\hlopt{:}\hlnum{1000}\hlstd{)}
-\hlstd{nums} \hlkwb{<-} \hlkwd{as.character}\hlstd{(nums)}
-\hlstd{col_year} \hlkwb{<-} \hlkwd{paste}\hlstd{(Xmatrix,nums,} \hlkwc{sep} \hlstd{=} \hlstr{""}\hlstd{)}
+\hlstd{fnt_pvalue_ma1} \hlkwb{<-} \hlkwa{function}\hlstd{(}\hlkwc{s}\hlstd{,}\hlkwc{t}\hlstd{)\{}
+  \hlkwd{summary}\hlstd{(}\hlkwd{gls}\hlstd{(t} \hlopt{~} \hlstd{s,} \hlkwc{correlation} \hlstd{=} \hlkwd{corARMA}\hlstd{(}\hlkwc{p}\hlstd{=}\hlnum{0}\hlstd{,}\hlkwc{q}\hlstd{=}\hlnum{1}\hlstd{)))}\hlopt{$}\hlstd{tTable[}\hlnum{2}\hlstd{,}\hlnum{4}\hlstd{]}
+\hlstd{\}}
 
-\hlstd{modma1_year}\hlopt{$}\hlstd{col_year[}\hlnum{1}\hlstd{]}
+\hlstd{modar1_pvalue} \hlkwb{<-} \hlkwd{apply}\hlstd{(ar1sim[,}\hlnum{1}\hlopt{:}\hlnum{1000}\hlstd{],} \hlnum{2}\hlstd{,} \hlkwa{function}\hlstd{(}\hlkwc{a}\hlstd{)\{}\hlkwd{fnt_pvalue}\hlstd{(Data1}\hlopt{$}\hlstd{Year,a)\})}
 
-\hlstd{coefar1_year} \hlkwb{<-} \hlkwd{lapply}\hlstd{(modar1_year, fnt_coeff)}
-\hlstd{coefma1_year} \hlkwb{<-} \hlkwd{lapply}\hlstd{(mod)}
+\hlstd{modma1_pvalue} \hlkwb{<-} \hlkwd{apply}\hlstd{(ar1sim[,}\hlnum{1}\hlopt{:}\hlnum{1000}\hlstd{],} \hlnum{2}\hlstd{,}\hlkwa{function}\hlstd{(}\hlkwc{a}\hlstd{)\{}\hlkwd{fnt_pvalue_ma1}\hlstd{(Data1}\hlopt{$}\hlstd{Year,a)\})}
 
-
-\hlstd{gls_ar1_out} \hlkwb{<-} \hlkwd{coef}\hlstd{(gls_ar1_obs)[}\hlnum{2}\hlstd{]}
-
-\hlstd{gls_ma_obs} \hlkwb{<-} \hlkwd{gls}\hlstd{(PropDays} \hlopt{~} \hlstd{Year,} \hlkwc{data} \hlstd{= Data1,} \hlkwc{correlation} \hlstd{=} \hlkwd{corARMA}\hlstd{())}
-
-\hlstd{gls_ma_out} \hlkwb{<-} \hlkwd{coef}\hlstd{(gls_ma_obs)[}\hlnum{2}\hlstd{]}
-
-\hlstd{gls_ar1} \hlkwb{<-} \hlkwd{replicate}\hlstd{(}\hlnum{1000}\hlstd{,} \hlkwd{coef}\hlstd{(}\hlkwd{gls}\hlstd{(PropDays} \hlopt{~} \hlkwd{shuffle}\hlstd{(Year),} \hlkwc{data} \hlstd{= Data1,} \hlkwc{correlation} \hlstd{=} \hlkwd{corAR1}\hlstd{()))[}\hlnum{2}\hlstd{])}
-
-\hlcom{#error ??}
-\hlstd{gls_ma} \hlkwb{<-} \hlkwd{replicate}\hlstd{(}\hlnum{1000}\hlstd{,} \hlkwd{coef}\hlstd{(}\hlkwd{gls}\hlstd{(PropDays} \hlopt{~} \hlkwd{shuffle}\hlstd{(Year),} \hlkwc{data} \hlstd{= Data1,} \hlkwc{correlation} \hlstd{=} \hlkwd{corARMA}\hlstd{()))[}\hlnum{2}\hlstd{])}
-
-\hlstd{pvalue_ar1} \hlkwb{<-} \hlstd{(}\hlkwd{length}\hlstd{(}\hlkwd{which}\hlstd{(gls_ar1} \hlopt{<=} \hlstd{gls_ar1_out))} \hlopt{+} \hlkwd{length}\hlstd{(}\hlkwd{which}\hlstd{(gls_ar1} \hlopt{>= -}\hlstd{gls_ar1_out)))}\hlopt{/}\hlkwd{length}\hlstd{(gls_ar1)}
-
-\hlcom{#pvalue_ma <- (length(which(gls_ma <= gls_ma_out)) + length(which(gls_ma >= -gls_ma_out)))/length(gls_ma)}
-
-\hlcom{#taken from hw6 solutions}
-\hlkwd{arima.sim}\hlstd{(}\hlkwc{n}\hlstd{=}\hlnum{109}\hlstd{,}\hlkwc{model}\hlstd{=}\hlkwd{list}\hlstd{(}\hlkwc{ar}\hlstd{=}\hlkwd{c}\hlstd{(}\hlnum{0.6}\hlstd{)),}\hlkwc{sd}\hlstd{=}\hlkwd{sqrt}\hlstd{(}\hlnum{0.0006664659}\hlstd{))}
+\hlstd{ar1_pvalue} \hlkwb{<-} \hlkwd{mean}\hlstd{(modar1_pvalue}\hlopt{<}\hlnum{0.05}\hlstd{)}
+\hlstd{ma1_pvalue} \hlkwb{<-} \hlkwd{mean}\hlstd{(modma1_pvalue}\hlopt{<}\hlnum{0.05}\hlstd{)}
 \end{alltt}
 \end{kframe}
 \end{knitrout}
