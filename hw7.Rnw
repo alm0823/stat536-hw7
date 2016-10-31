@@ -105,7 +105,7 @@ table(mex[,c("year", "month")]) #7 years, 12 obs in each
 ## no seasonal component
 
 lm_nt.ns <- lm(value ~ 1, data = mex)
-mod_nt.ns <- paste("$y_{t}$ = $\beta_{o} + e_{t}$")
+mod_nt.ns <- paste("$y_{t}$ = $\\beta_{o} + e_{t}$")
 df_nt.ns <- summary(lm_nt.ns)$df[1]
 aic_nt.ns <- AIC(lm_nt.ns)
 nt.ns <- c("No Year, No Seasonality", df_nt.ns, aic_nt.ns)
@@ -160,9 +160,18 @@ qt.sm <- c("Quadratic Year, 5th Order Harmonic", df_qt.sm, aic_qt.sm)
 #harmonic() generates sines and cosines 
 #note: time unit affects frequency measure
 #discuss: what does m do?  Ho: the number of cycles
+    # Ha: number of terms
+    # Kenny's pvalue = 0.12 (number of terms is related to number of cycles)
 #discuss: is there a phi component? the help file doesn't have one 
 #and I don't understand what is meant by "phase" = phi
+    # phase is physics-talk for shifting the cos left or right
+    # eg cos(t - phi) shifts the graph of cos(t) to the right by phi
+    # harmonic doesn't include phi because it uses b_1*cos(t) + b_2*sin(t)
+    # which is equivalent to b*cost(t+phi) because of the sum identity
+    # source Esty (2012) section 7.3 :P
 #discuss: what is t here?
+    # I think t is number of years, starting at year=1
+    # Before we added frequency = 12, t was the number of months
 mex$monthts <- ts(mex$month, frequency = 12)
 
 lm_nt.sh1 <- lm(value ~ harmonic(monthts, m = 1), data = mex)
@@ -198,14 +207,14 @@ nt.sh5 <- c("No Year, 5th Order Harmonic", df_nt.sh5, aic_nt.sh5)
 
 lm_lt.sh5 <- lm(value ~ year + harmonic(monthts, m = 5), data = mex)
 mod_lt.sh5 <- paste("$y_{t} = \\gamma_{0} + \\gamma_{1}year + \\Sigma_{i=1:5} 
-                    \\beta_{i}cos(2i\\pif(t)) + \\psi_{i}sin(2i\\pi f(t)) + e_{t}$")
+                    \\beta_{i}cos(2i\\pi f(t)) + \\psi_{i}sin(2i\\pi f(t)) + e_{t}$")
 df_lt.sh5 <- summary(lm_lt.sh5)$df[1]
 aic_lt.sh5 <- AIC(lm_lt.sh5)
 lt.sh5 <- c("Linear Year, 5th Order Harmonic", df_lt.sh5, aic_lt.sh5)
 
 lm_qt.sh5 <- lm(value ~ poly(year, 2) + harmonic(monthts, m = 5), data = mex)
 mod_qt.sh5 <- paste("$y_{t} = \\gamma_{0} + \\gamma_{1}year + \\gamma_{1}year^{2} + 
-                    \\Sigma_{i=1:5} \\beta_{i}cos(2i\\pif(t)) + \\psi_{i}sin(2i\\pi f(t)) + e_{t}$")
+                    \\Sigma_{i=1:5} \\beta_{i}cos(2i\\pi f(t)) + \\psi_{i}sin(2i\\pi f(t)) + e_{t}$")
 df_qt.sh5 <- summary(lm_qt.sh5)$df[1]
 aic_qt.sh5 <- AIC(lm_qt.sh5)
 qt.sh5 <- c("Quadratic Year, 5th Order Harmonic", df_qt.sh5, aic_qt.sh5)
@@ -266,7 +275,7 @@ Linear Year, 5th Order Harmonic \Sexpr{mod_lt.sh5}
 Quadratic Year, 5th Order Harmonic \Sexpr{mod_qt.sh5}
 
 \item%2
-{\it Now fit a ``gam" from the ``mgcv" package that includes a long-term trend based on a thin-plate spline with shrinkage that uses `k=#years,bs="ts"` from the fractional year variable and a cyclic spline seasonal component. To build the cyclic spline component, use the numerically coded month variable that goes from 1 to 12 and {\texttt k=12,bs=``cc"}. Fit the model, plot the long-term trend and the seasonal component (use ``plot(gam$\_$model)"), and discuss the estimated components, using both the plots and the EDF of each term.} 
+{\it Now fit a ``gam" from the ``mgcv" package that includes a long-term trend based on a thin-plate spline with shrinkage that uses `k=\#years,bs="ts"` from the fractional year variable and a cyclic spline seasonal component. To build the cyclic spline component, use the numerically coded month variable that goes from 1 to 12 and {\texttt k=12,bs=``cc"}. Fit the model, plot the long-term trend and the seasonal component (use ``plot(gam$\_$model)"), and discuss the estimated components, using both the plots and the EDF of each term.} 
 
 To model the complexity in the long term component, we need about one parameter for each year. There appears to be a linear long term year component with some slight curvature and the month component appears to be cyclic. Months appear to come in pairs as there are half the degrees of freedom as the number of months.
 
@@ -282,7 +291,7 @@ gam1
 @
 
 \item%3
-{\it Calculate the AIC of the GAM using the ``AIC" function and discuss how that result compares to your AICs in #1. How is it similar or different in terms of information (degrees of freedom) used?}
+{\it Calculate the AIC of the GAM using the ``AIC" function and discuss how that result compares to your AICs in \#1. How is it similar or different in terms of information (degrees of freedom) used?}
 
 GAM has a lower AIC than all of the models fit in (1). GAM has a fractional degrees of freedom while the models in (1) did not. The degrees of freedom used on GAM are on the upper end of the degrees of freedom used in models in (1).
 <<prob3>>=
@@ -305,7 +314,7 @@ ggplot(data = mex, aes(x = time(year), y = value)) + geom_line() + scale_x_conti
 \end{center}
 
 \item%5
-{\it Revisit your simulation with an AR(1) from HW 6 # 8. Consider fitting a model with autocorrelation in it using ``gls" from the ``nlme" package that accounts for an MA(1) error and another that accounts for an AR(1) error. Run your simulation code, extracting the p-values from the two model summaries and estimate the type I error rate in each situation and compare it to what you get from the regular linear model. 
+{\it Revisit your simulation with an AR(1) from HW 6 \#8. Consider fitting a model with autocorrelation in it using ``gls" from the ``nlme" package that accounts for an MA(1) error and another that accounts for an AR(1) error. Run your simulation code, extracting the p-values from the two model summaries and estimate the type I error rate in each situation and compare it to what you get from the regular linear model. 
 
 <<prob5, include = FALSE, cache = TRUE>>=
 
@@ -379,6 +388,99 @@ If you have not completed STAT 421 or equivalent, please try the problem and the
 
 \item%6
 {\it Answer Cryer and Chan question 2.4 (page 20)}
+
+{\it Let $\{e_{t}\}$ be a zero mean white noise process. Suppose that the observed process is $Y_{t} = e_{t} + \theta e_{t-1}$, where $\theta$ is either 3 or 1/3.}
+
+\begin{enumerate}
+
+\item%a
+{\it Find the autocorrelation function for $\{Y_{t}\}$} both when $\theta=3$ and when $\theta=1/3$.
+
+For general $\theta$, the covariance is
+\begin{align*}
+Cov(Y_{t}, Y_{s}) &= Cov(e_{t} + \theta e_{t-1}, e_{s} + \theta e_{s-1}) \\
+&= Cov(e_{t}, e_{s}) + \theta Cov(e_{t-1}, e_{s}) + \theta Cov(e_{t}, e_{s-1}) + \theta^{2} Cov(e_{t-1}, e_{s-1}).
+\end{align*}
+To find the covariance function, we will consider $s=t-k$ for various $k$.
+
+\begin{itemize}
+
+\item For $k=0$:
+\begin{align*}
+Cov(Y_{t}, Y_{t}) &= Cov(e_{t}, e_{t}) + \theta Cov(e_{t-1}, e_{t}) + \theta Cov(e_{t}, e_{t-1}) + \theta^{2} Cov(e_{t-1}, e_{t-1}) \\
+&= \sigma^{2} + 0 + 0 + \theta^{2} \sigma^{2} \\
+&= (1+\theta^{2}) \sigma^{2}
+\end{align*}
+
+\item For $k=1$:
+\begin{align*}
+Cov(Y_{t}, Y_{t-1}) &= Cov(e_{t}, e_{t-1}) + \theta Cov(e_{t-1}, e_{t-1}) + \theta Cov(e_{t}, e_{t-2}) + \theta^{2} Cov(e_{t-1}, e_{t-2}) \\
+&= 0 + \theta \sigma^{2} + 0 + 0 \\
+&= \theta \sigma^{2}
+\end{align*}
+
+\item For $k=2$:
+\begin{align*}
+Cov(Y_{t}, Y_{t-2}) &= Cov(e_{t}, e_{t-2}) + \theta Cov(e_{t-1}, e_{t-2}) + \theta Cov(e_{t}, e_{t-3}) + \theta^{2} Cov(e_{t-1}, e_{t-3}) \\
+&= 0 + 0 + 0 + 0 \\
+&= 0
+\end{align*}
+
+\end{itemize}
+
+If $k>2$, the calculations will be the same as in the $k=2$ case, again leading to $Cov(Y_{t}, Y_{t-k})=0$. Also note that similar calculations will show that $Cov(Y_{t}, Y_{t+1})=Cov(Y_{t}, Y_{t-1})$ and that $Cov(Y_{t}, Y_{t-k})=0$ for $k \leq 2$. Thus the covariance is symmetric and depends only on $k$ (because $t$ never appears in the simplified form), so the process is second-order stationary.
+
+Then we can write the covariance function as
+\begin{equation*}
+\gamma_{k} = \begin{cases}
+(1+\theta^{2}) \sigma^{2} & k = 0 \\
+\theta \sigma^{2} & |k| = 1 \\
+0 & |k| \geq 2
+\end{cases}
+\end{equation*}
+and the correlation function is
+\begin{equation*}
+\rho_{k} = \frac{\gamma_{k}}{\gamma_{0}} = \begin{cases}
+1 & k = 0 \\
+\frac{\theta}{1+\theta^2} & |k| = 1 \\
+0 & |k| \geq 2
+\end{cases}
+\end{equation*}
+Then for $\theta = 3$,
+\begin{equation*}
+\rho_{k} = \begin{cases}
+1 \\
+\frac{3}{1+3^2} \\
+0
+\end{cases} = \begin{cases}
+1 & k = 0 \\
+\frac{3}{10} & |k| = 1 \\
+0 & |k| \geq 2
+\end{cases}
+\end{equation*}
+Also for $\theta=1/3$,
+\begin{equation*}
+\rho_{k} = \begin{cases}
+1 \\
+\frac{\left(\frac{1}{3}\right)}{1+\left(\frac{1}{3}\right)^2} \\
+0
+\end{cases} = \begin{cases}
+1 \\
+\frac{\left(\frac{1}{3}\right)}{\left(\frac{10}{9}\right)} \\
+0
+\end{cases} = \begin{cases}
+1 & k = 0 \\
+\frac{3}{10} & |k| = 1 \\
+0 & |k| \geq 2
+\end{cases}
+\end{equation*}
+
+\item%b
+{\it You should have discovered that the time series is stationary regardless of the value of $\theta$ and that the autocorrelation functions are the same for $\theta = 3$ and $\theta = 1/3$. For simplicity, suppose that the process mean is known to be zero and the variance of $Y_{t}$ is known to be 1. You observe the series $\{Y_{t}\}$ for $t = 1, 2,\dots, n$ and suppose that you can produce good estimates of the autocorrelations $\rho_{k}$. Do you think that you could determine which value of $\theta$ is correct (3 or 1/3) based on the estimate of $\rho_{k}$? Why or why not?}
+
+No, we cannot determine which value $\theta$ have because $\rho_{k}$ is the only information we have about $\theta$. If we knew $\sigma^{2}$ we could solve for $\theta$. % Not sure about this second sentence.
+
+\end{enumerate}
 
 
 \item%7
